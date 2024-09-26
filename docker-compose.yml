@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  beautysalon.booking:
+    image: ${DOCKER_REGISTRY-}beautysalonbooking
+    build:
+      context: .
+      dockerfile: BeautySalon.Booking/Dockerfile
