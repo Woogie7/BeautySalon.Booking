@@ -6,5 +6,9 @@ using System.Threading.Tasks;
 
 namespace BeautySalon.Domain.SeedWork
 {
-    public interface IAggregateRoot;
+    public abstract class AggregateRoot<TId> : Entity<TId>
+        where TId : notnull
+    {
+        protected AggregateRoot(TId Id) : base(Id) { }
+    }
 }

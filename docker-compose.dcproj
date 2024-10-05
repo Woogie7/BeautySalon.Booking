@@ -4,10 +4,10 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>c3809698-32bb-4c3e-8c72-f6687fceb13a</ProjectGuid>
+    <ProjectGuid>23980dc2-5559-4849-ad8e-9e0ce7f34001</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>beautysalon.booking</DockerServiceName>
+    <DockerServiceName>beautysalon.booking.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

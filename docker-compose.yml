@@ -1,8 +1,26 @@
 version: '3.4'
 
 services:
-  beautysalon.booking:
-    image: ${DOCKER_REGISTRY-}beautysalonbooking
+  beautysalon.booking.api:
+    image: ${DOCKER_REGISTRY-}beautysalonbookingapi
+    container_name: beautysalon.booking.api
     build:
       context: .
-      dockerfile: BeautySalon.Booking/Dockerfile
+      dockerfile: BeautySalon.Booking.Api/Dockerfile
+    environment:
+        - "ConnectionString_BeautySalonBookingDb=Host=beautysalon.booking.database; Port=5432; Database=BeautySalonBookingDb; Username=postgres; Password=1234"
+    ports:
+        - "4680:4680"
+        - "4681:4681"
+  beautysalon.booking.database:
+    image: postgres:latest
+    container_name: beautysalon.booking.database
+    environment:
+        - POSTGRES_DB=BeautySalonBookingDb
+        - POSTGRES_USER=postgres    
+        - POSTGRES_PASSWORD=1234
+    volumes:
+        - ./.containers/beautysalon.booking.database:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+    

@@ -1,36 +1,46 @@
-﻿using BeautySalon.Domain.SeedWork;
+﻿using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
+using BeautySalon.Domain.SeedWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
 {
-    public class Book : Entity, IAggregateRoot
+    public class Book : AggregateRoot<BookId>
     {
         public BookingTime Time {  get; private set; }
+        public Employee Employee { get; }
 
-        private Employee _employee;
-        public Employee Employee => _employee;
+        public Client Client { get; }
 
-        private Client _client;
-        public Client Client => _client;
-
-        public Service _service;
-        public Service Service => _service;
+        public Service Service { get; }
 
 
         private bool _isConfirmed;
 
-        public Book(BookingTime time, Employee employee, Client client, Service service)
+        private Book(BookId id,
+            BookingTime time, 
+            Employee employee, 
+            Client clientId, 
+            Service service) : base(id) 
         {
             Time = time;
-            _employee = employee;
-            _client = client;
-            _service = service;
-
+            Employee = employee;
+            Client = clientId;
+            Service = service;
             _isConfirmed = false;
+        }
+
+        public static Book Create(
+            BookingTime time,
+            Employee employee,
+            Client client,
+            Service service)
+        {
+            return new(BookId.CreateUnique(), time, employee, client, service);
         }
 
         public void ConfirmBooking()
