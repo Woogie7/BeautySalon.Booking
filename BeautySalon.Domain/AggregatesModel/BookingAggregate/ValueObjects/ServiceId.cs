@@ -17,6 +17,11 @@ namespace BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjec
             Value = id;
         }
 
+        public static ServiceId Create(Guid id)
+        {
+            return new ServiceId(id);
+        }
+
         public static ServiceId CreateUnique()
         {
             return new ServiceId(Guid.NewGuid());

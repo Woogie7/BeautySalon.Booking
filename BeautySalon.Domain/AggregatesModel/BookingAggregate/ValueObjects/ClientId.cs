@@ -2,18 +2,23 @@
 
 namespace BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects
 {
-    public sealed class ClinetId : ValueObject
+    public sealed class ClientId : ValueObject
     {
         public Guid Value { get; }
 
-        private ClinetId(Guid id) 
+        private ClientId(Guid id) 
         {
             Value = id;
         }
 
-        public static ClinetId CreateUnique()
+        public static ClientId Create(Guid id)
         {
-            return new ClinetId(Guid.NewGuid());
+            return new ClientId(id);
+        }
+
+        public static ClientId CreateUnique()
+        {
+            return new ClientId(Guid.NewGuid());
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

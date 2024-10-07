@@ -20,6 +20,10 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects
         {
             return new BookId(Guid.NewGuid());
         }
+        public static BookId Create(Guid value)
+        {
+            return new BookId(value);
+        }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

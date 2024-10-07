@@ -10,11 +10,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
 {
     public class Service : Entity<ServiceId>
     {
-        public string Name { get; }
-
-        private readonly List<Book> _books = new();
-
-        public IReadOnlyList<Book> Books => _books.AsReadOnly();
+        public string Name { get; private set; }
 
         private Service(ServiceId serviceId,
             string name)
@@ -22,6 +18,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
         {
             Name = name;
         }
+        private Service() { }
 
         public static Service Create(
             string name)

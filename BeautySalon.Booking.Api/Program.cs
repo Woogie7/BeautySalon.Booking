@@ -1,23 +1,18 @@
 using AutoMapper;
 using BeautySalon.Booking.Application;
+using BeautySalon.Booking.Persistence;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Contracts;
-using BeautySalon.Booking.Persistence.Context;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AppApplication();
+builder.Services.AddApplication();
+builder.Services.AddPersistance(builder.Configuration);
 
-var ñonnection = builder.Configuration.GetConnectionString("BookingDatabase");
-builder.Services.AddDbContext<BookingContext>(o =>
-{
-    o.UseNpgsql(ñonnection);
-});
 
 var app = builder.Build();
 

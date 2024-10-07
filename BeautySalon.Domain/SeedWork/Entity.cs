@@ -18,7 +18,7 @@ namespace BeautySalon.Domain.SeedWork
             Id = id;
         }
 
-       
+       protected Entity() { }
 
         public override bool Equals(object obj)
         {

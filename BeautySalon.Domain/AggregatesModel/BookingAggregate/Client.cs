@@ -3,18 +3,16 @@ using BeautySalon.Domain.SeedWork;
 
 namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
 {
-    public sealed class Client : Entity<ClinetId>
+    public sealed class Client : Entity<ClientId>
     {
-        public string Name {  get; }
-        public string SurnName {  get; }
-        public string Email {  get; }
-        public int Phone{  get; }
-        public DateTime BerthDay{  get; }
-        private readonly List<Book> _books = new();
+        public string Name { get; private set; }
+        public string SurnName {  get; private set; }
+        public string Email {  get; private set; }
+        public int Phone{  get; private set; }
+        public DateTime BerthDay{  get; private set; }
 
-        public IReadOnlyList<Book> Books => _books.AsReadOnly();
 
-        private Client(ClinetId clientId, 
+        private Client(ClientId clientId, 
             string name, 
             string surnName, 
             string email, 
@@ -29,6 +27,8 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             BerthDay = berthDay;
         }
 
+        private Client() { }    
+
         public static Client Create(
             string name,
             string surnName,
@@ -38,7 +38,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             )
         {
             return new(
-                ClinetId.CreateUnique(), 
+                ClientId.CreateUnique(), 
                 name, 
                 surnName, 
                 email, 

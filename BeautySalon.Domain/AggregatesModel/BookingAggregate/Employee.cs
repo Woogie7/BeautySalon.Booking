@@ -13,18 +13,17 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
 {
     public class Employee : Entity<EmployeeId>
     { 
-        public string Name { get; }
+        public string Name { get; private set; }
         
-        private readonly List<Book> _books = new();
-
-        public IReadOnlyList<Book> Books => _books.AsReadOnly();
-
+        
         private Employee(EmployeeId employeeId,
             string name)
             : base(employeeId)
         {
             Name = name;
         }
+
+        private Employee() { }
 
         public static Employee Create(
             string name

@@ -17,6 +17,11 @@ namespace BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjec
             Value = id;
         }
 
+        public static EmployeeId Create(Guid id)
+        {
+            return new EmployeeId(id);
+        }
+
         public static EmployeeId CreateUnique()
         {
             return new EmployeeId(Guid.NewGuid());

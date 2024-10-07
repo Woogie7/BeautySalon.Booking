@@ -10,5 +10,7 @@ namespace BeautySalon.Domain.SeedWork
         where TId : notnull
     {
         protected AggregateRoot(TId Id) : base(Id) { }
+
+        protected AggregateRoot() { }
     }
 }
