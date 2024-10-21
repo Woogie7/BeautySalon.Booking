@@ -4,7 +4,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects
 {
     public sealed class ClientId : ValueObject
     {
-        public Guid Value { get; }
+        public Guid Value { get; private set; }
 
         private ClientId(Guid id) 
         {

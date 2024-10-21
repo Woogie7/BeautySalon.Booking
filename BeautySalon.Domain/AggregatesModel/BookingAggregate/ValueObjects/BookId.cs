@@ -9,7 +9,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects
 {
     public sealed class BookId : ValueObject
     {
-        public Guid Value { get; }
+        public Guid Value { get; private set; }
 
         private BookId(Guid id)
         {

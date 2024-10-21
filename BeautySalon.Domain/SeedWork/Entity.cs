@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BeautySalon.Booking.Domain.SeedWork;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,16 +10,22 @@ namespace BeautySalon.Domain.SeedWork
     public abstract class Entity<TId> where TId : notnull
     {
 
-        int? _requestedHashCode;
+        private readonly List<IDomainEvent> _domainEvents = new();
         
         public TId Id { get; protected set; }
 
+        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
         protected Entity(TId id)
         {
             Id = id;
         }
 
-       protected Entity() { }
+        protected Entity() { }
+
+        public void AddDomainEvents(IDomainEvent domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
 
         public override bool Equals(object obj)
         {

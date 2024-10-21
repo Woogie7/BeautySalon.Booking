@@ -10,7 +10,7 @@ namespace BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjec
 {
     public class ServiceId : ValueObject
     {
-        public Guid Value { get; }
+        public Guid Value { get; private set; }
 
         private ServiceId(Guid id) 
         {

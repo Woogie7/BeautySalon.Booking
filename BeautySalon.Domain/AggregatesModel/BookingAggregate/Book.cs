@@ -1,4 +1,5 @@
-﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
+﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.Event;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Domain.SeedWork;
 using System;
@@ -43,7 +44,11 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             ClientId clientId,
             ServiceId serviceId)
         {
-            return new(BookId.CreateUnique(), time, EmployeeId.Create(employeeId.Value), ClientId.Create(clientId.Value), ServiceId.Create(serviceId.Value));
+            var book = new Book(BookId.CreateUnique(), time, EmployeeId.Create(employeeId.Value), ClientId.Create(clientId.Value), ServiceId.Create(serviceId.Value));
+
+            book.AddDomainEvents(new BookingCreated(book));
+
+            return book;
         }
 
         public void ConfirmBooking()
