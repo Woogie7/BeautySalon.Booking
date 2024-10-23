@@ -22,7 +22,7 @@ namespace BeautySalon.Booking.Persistence
             {
                 o.UseNpgsql(сonnection);
             });
-            service.AddTransient<IBookingRepository, BookingRepository>();
+            service.AddScoped<IBookingRepository, BookingRepository>();
 
             return service;
         }

@@ -4,6 +4,7 @@ using BeautySalon.Booking.Persistence;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Contracts;
 using MediatR;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 builder.Services.AddPersistance(builder.Configuration);
+builder.Services.AddStackExchangeRedisCache(o => o.Configuration = (builder.Configuration.GetConnectionString("BookingChache")));
 
 
 var app = builder.Build();

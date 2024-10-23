@@ -12,6 +12,7 @@ services:
     ports:
         - "4680:4680"
         - "4681:4681"
+
   beautysalon.booking.database:
     image: postgres:latest
     container_name: beautysalon.booking.database
@@ -23,4 +24,13 @@ services:
         - ./.containers/beautysalon.booking.database:/var/lib/postgresql/data
     ports:
         - "5432:5432"
+
+  beautysalon.booking.cache:
+    image: redis:latest
+    container_name: beautysalon.booking.cache
+    restart: always
+    ports:
+        - "6379:6379"
+     
+
     

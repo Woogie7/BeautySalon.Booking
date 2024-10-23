@@ -23,6 +23,8 @@ namespace BeautySalon.Booking.Persistence.Configurations
 
             builder.HasKey(b => b.Id);
 
+            builder.Ignore(b => b.DomainEvents);
+
             builder.Property(b => b.Id)
                 .ValueGeneratedNever()
                 .HasConversion(
