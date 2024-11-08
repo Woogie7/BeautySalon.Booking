@@ -13,7 +13,9 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Application", "..\BeautySalon.Booking.Application\BeautySalon.Booking.Application.csproj", "{2AF0C62A-94D9-436F-AD97-765486AFA2DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Booking.Contracts", "..\BeautySalon.Booking.Contrects\BeautySalon.Booking.Contracts.csproj", "{ECB3BBCA-E266-4D4A-9735-2F4872A03B2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Contracts", "..\BeautySalon.Booking.Contrects\BeautySalon.Booking.Contracts.csproj", "{ECB3BBCA-E266-4D4A-9735-2F4872A03B2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Booking.Infrastructure", "..\BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj", "{40D87118-A171-4333-9F35-74E94A247084}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{ECB3BBCA-E266-4D4A-9735-2F4872A03B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECB3BBCA-E266-4D4A-9735-2F4872A03B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECB3BBCA-E266-4D4A-9735-2F4872A03B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D87118-A171-4333-9F35-74E94A247084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D87118-A171-4333-9F35-74E94A247084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D87118-A171-4333-9F35-74E94A247084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D87118-A171-4333-9F35-74E94A247084}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

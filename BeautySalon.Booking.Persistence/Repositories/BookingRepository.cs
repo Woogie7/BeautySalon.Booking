@@ -21,13 +21,6 @@ namespace BeautySalon.Booking.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public void Add(Book booking)
-        {
-            _dbContext.Books.Add(booking);
-            _dbContext.SaveChanges();
-        }
-
-
         public async Task<bool> IsBusyEmployeeAsync(Guid employeeId, Book booking)
         {
             return await _dbContext.Books
@@ -60,11 +53,29 @@ namespace BeautySalon.Booking.Persistence.Repositories
 
         public async Task<Employee?> GetEmployeeByIdAsync(Guid employeeId)
         {
-           var asasda = await _dbContext.Employees.ToListAsync();
+            var asasda2 = await _dbContext.Books.ToListAsync();
+            var asasda = await _dbContext.Clients.ToListAsync();
+            var asasda1 = await _dbContext.Employees.ToListAsync();
 
-            return await _dbContext.Employees
+            var client = await _dbContext.Employees
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == EmployeeId.Create(employeeId));
+            return client;
+        }
+
+        public async Task<Client?> GetClientByIdAsync(Guid clientId)
+        {
+            var client = await _dbContext.Clients
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == ClientId.Create(clientId));
+
+            return client;
+        }
+
+        public async Task CreateAsync(Book booking)
+        {
+            await _dbContext.Books.AddAsync(booking);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

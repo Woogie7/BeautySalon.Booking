@@ -23,7 +23,7 @@ services:
     volumes:
         - ./.containers/beautysalon.booking.database:/var/lib/postgresql/data
     ports:
-        - "5432:5432"
+        - "5055:5432"
 
   beautysalon.booking.cache:
     image: redis:latest
@@ -31,6 +31,20 @@ services:
     restart: always
     ports:
         - "6379:6379"
+  
+  beautysalon.booking.RabbitMq:
+    image: rabbitmq:management
+    container_name: beautysalon.booking.rabbitmq
+    hostname: booking-mq
+    volumes:
+        - ./.containers/queue/data/:/var/lib/rabbitmq
+        - ./.containers/queue/log/:/var/lib/rabbitmq
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+    ports:
+        - "5672:5672"
+        - "15672:15672"    
      
 
     
