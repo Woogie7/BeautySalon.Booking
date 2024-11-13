@@ -15,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddPersistance(builder.Configuration);
+
 builder.Services.AddStackExchangeRedisCache(o => o.Configuration = (builder.Configuration.GetConnectionString("BookingChache")));
 
 
@@ -30,9 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
-
-app.MapPost("/client/{clientId}/booking", async (CreateBookingRequest reqest, string clientId, ISender _sender, IMapper _mapper) =>
+app.MapPost("/booking", async (CreateBookingRequest reqest, ISender _sender, IMapper _mapper) =>
 {
     var command = _mapper.Map<CreateBookingCommand>(reqest);
     

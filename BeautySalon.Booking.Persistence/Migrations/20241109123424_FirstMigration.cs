@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BeautySalon.Booking.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class FristMigration : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace BeautySalon.Booking.Persistence.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     SurnName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Phone = table.Column<int>(type: "integer", maxLength: 10, nullable: false),
+                    Phone = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     BerthDay = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -57,6 +57,7 @@ namespace BeautySalon.Booking.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Time_StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Time_Duration = table.Column<TimeSpan>(type: "interval", nullable: false),
                     Time_EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClientId = table.Column<Guid>(type: "uuid", nullable: false),

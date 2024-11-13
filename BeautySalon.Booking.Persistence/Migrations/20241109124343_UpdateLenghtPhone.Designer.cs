@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BeautySalon.Booking.Persistence.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20241007180744_FristMigration")]
-    partial class FristMigration
+    [Migration("20241109124343_UpdateLenghtPhone")]
+    partial class UpdateLenghtPhone
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,9 +68,10 @@ namespace BeautySalon.Booking.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("Phone")
-                        .HasMaxLength(10)
-                        .HasColumnType("integer");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)");
 
                     b.Property<string>("SurnName")
                         .IsRequired()
@@ -142,6 +143,9 @@ namespace BeautySalon.Booking.Persistence.Migrations
                         {
                             b1.Property<Guid>("BookId")
                                 .HasColumnType("uuid");
+
+                            b1.Property<TimeSpan>("Duration")
+                                .HasColumnType("interval");
 
                             b1.Property<DateTime>("EndTime")
                                 .HasColumnType("timestamp with time zone");

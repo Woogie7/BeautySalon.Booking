@@ -32,7 +32,7 @@ namespace BeautySalon.Booking.Persistence.Configurations
             builder.Property(c => c.Email).HasMaxLength(255).IsRequired();
             builder.HasIndex(c => c.Email).IsUnique();
 
-            builder.Property(c => c.Phone).HasMaxLength(10);
+            builder.Property(c => c.Phone).HasMaxLength(11);
             builder.HasIndex(c => c.Phone).IsUnique();
 
 

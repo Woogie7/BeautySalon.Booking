@@ -25,7 +25,7 @@ namespace BeautySalon.Booking.Persistence.Repositories
         {
             return await _dbContext.Books
                 .Where(b => b.EmployeeId == EmployeeId.Create(employeeId))
-                .Where(b => b.Time.StartTime < booking.Time.EndTime && b.Time.EndTime < booking.Time.StartTime)
+                .Where(b => b.Time.StartTime < booking.Time.EndTime && b.Time.EndTime > booking.Time.StartTime)
                 .AnyAsync();
         }
 
@@ -33,7 +33,7 @@ namespace BeautySalon.Booking.Persistence.Repositories
         {
             return await _dbContext.Books
                 .Where(b => b.ClientId == ClientId.Create(clientId))
-                .Where(b => b.Time.StartTime < booking.Time.EndTime && b.Time.EndTime < booking.Time.StartTime)
+                .Where(b => b.Time.StartTime < booking.Time.EndTime && b.Time.EndTime > booking.Time.StartTime)
                 .AnyAsync();
         }
 
@@ -44,26 +44,16 @@ namespace BeautySalon.Booking.Persistence.Repositories
                 .AnyAsync();
         }
 
-        public async Task<bool> IsExistEmployeeAsync(Guid employeeId)
+        public async Task<Employee?> GetByIdEmployeeAsync(Guid employeeId)
         {
-            return await _dbContext.Employees
-                .Where(e => e.Id == EmployeeId.Create(employeeId))
-                .AnyAsync();
-        }
 
-        public async Task<Employee?> GetEmployeeByIdAsync(Guid employeeId)
-        {
-            var asasda2 = await _dbContext.Books.ToListAsync();
-            var asasda = await _dbContext.Clients.ToListAsync();
-            var asasda1 = await _dbContext.Employees.ToListAsync();
-
-            var client = await _dbContext.Employees
+            var employee = await _dbContext.Employees
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == EmployeeId.Create(employeeId));
-            return client;
+            return employee;
         }
 
-        public async Task<Client?> GetClientByIdAsync(Guid clientId)
+        public async Task<Client?> GetByIdClientAsync(Guid clientId)
         {
             var client = await _dbContext.Clients
                 .AsNoTracking()

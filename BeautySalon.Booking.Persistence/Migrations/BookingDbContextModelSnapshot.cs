@@ -65,9 +65,10 @@ namespace BeautySalon.Booking.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("Phone")
-                        .HasMaxLength(10)
-                        .HasColumnType("integer");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)");
 
                     b.Property<string>("SurnName")
                         .IsRequired()

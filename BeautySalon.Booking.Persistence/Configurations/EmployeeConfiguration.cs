@@ -28,6 +28,10 @@ namespace BeautySalon.Booking.Persistence.Configurations
                 value => EmployeeId.Create(value));
 
             builder.Property(c => c.Name).HasMaxLength(100).IsRequired();
+
+            builder.HasMany<Service>()
+           .WithMany()
+           .UsingEntity(j => j.ToTable("EmployeeServices"));
         }
     }
 }

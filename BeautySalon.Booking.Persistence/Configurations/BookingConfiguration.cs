@@ -48,7 +48,5 @@ namespace BeautySalon.Booking.Persistence.Configurations
                 .HasForeignKey(b => b.ServiceId)
                 .IsRequired();
         }
-
-
     }
 }

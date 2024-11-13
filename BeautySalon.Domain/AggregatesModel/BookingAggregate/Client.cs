@@ -8,7 +8,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
         public string Name { get; private set; }
         public string SurnName {  get; private set; }
         public string Email {  get; private set; }
-        public int Phone{  get; private set; }
+        public string Phone{  get; private set; }
         public DateTime BerthDay{  get; private set; }
 
 
@@ -16,7 +16,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             string name, 
             string surnName, 
             string email, 
-            int phone, 
+            string phone, 
             DateTime berthDay) 
             : base(clientId)
         {
@@ -33,7 +33,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             string name,
             string surnName,
             string email,
-            int phone,
+            string phone,
             DateTime berthDay
             )
         {

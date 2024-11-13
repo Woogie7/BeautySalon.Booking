@@ -1,5 +1,6 @@
 ﻿using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Domain.SeedWork;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
