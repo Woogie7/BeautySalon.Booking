@@ -6,6 +6,9 @@ using BeautySalon.Booking.Contracts;
 using MediatR;
 using BeautySalon.Booking.Api;
 using BeautySalon.Booking.Infrastructure;
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Domain.AggregatesModel.BookingAggregate;
+using MassTransit.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +16,11 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddPersistance(builder.Configuration);
+
+builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSection("MessageBroker"));
+//builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<MessageBrokerSettings>>().ToString());
 
 builder.Services.AddStackExchangeRedisCache(o => o.Configuration = (builder.Configuration.GetConnectionString("BookingChache")));
 

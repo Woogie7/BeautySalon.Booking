@@ -1,4 +1,5 @@
-﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.Event;
+﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.Event;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Domain.SeedWork;
@@ -19,6 +20,8 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
         public ClientId ClientId { get; private set; }
 
         public ServiceId ServiceId { get; private set; }
+        public BookStatus BookStatus { get; private set; }
+        private int _bookStatusId;
 
 
         private bool _isConfirmed;
@@ -33,6 +36,7 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             EmployeeId = employee;
             ClientId = clientId;
             ServiceId = service;
+            _bookStatusId = BookStatus.Processing.Id;
             _isConfirmed = false;
         }
 
