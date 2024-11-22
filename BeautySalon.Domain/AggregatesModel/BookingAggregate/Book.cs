@@ -58,6 +58,13 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
         public void ConfirmBooking()
         {
             _isConfirmed = true;
+            BookStatus = BookStatus.Confirmed;
+        }
+
+        public void CanceledBooking()
+        {
+            _isConfirmed = false;
+            BookStatus = BookStatus.Canceled;
         }
 
     }

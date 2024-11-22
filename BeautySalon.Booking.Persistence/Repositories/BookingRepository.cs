@@ -67,5 +67,10 @@ namespace BeautySalon.Booking.Persistence.Repositories
             await _dbContext.Books.AddAsync(booking);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<Book> GetByIdBookAsync(Guid bookId)
+        {
+            return await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == BookId.Create(bookId));
+        }
     }
 }

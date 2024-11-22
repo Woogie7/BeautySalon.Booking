@@ -2,13 +2,13 @@ using AutoMapper;
 using BeautySalon.Booking.Application;
 using BeautySalon.Booking.Persistence;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
-using BeautySalon.Booking.Contracts;
 using MediatR;
 using BeautySalon.Booking.Api;
 using BeautySalon.Booking.Infrastructure;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
-using BeautySalon.Domain.AggregatesModel.BookingAggregate;
-using MassTransit.Configuration;
+using BeautySalon.Booking.Application.DTO;
+using MassTransit;
+using BeautySalon.Booking.Application.Features.Bookings.CreateBooking;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +16,29 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure();
 builder.Services.AddPersistance(builder.Configuration);
+
+builder.Services.AddMassTransit(busConfing =>
+{
+    busConfing.SetKebabCaseEndpointNameFormatter();
+
+    busConfing.AddConsumer<BookingConfirmedConsumer>();
+
+    busConfing.UsingRabbitMq((context, configurator) =>
+    {
+        MessageBrokerSettings settings = context.GetRequiredService<MessageBrokerSettings>();
+
+        configurator.Host(new Uri("localhost"), h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        configurator.ConfigureEndpoints(context);
+    });
+
+});
 
 builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSection("MessageBroker"));
 //builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<MessageBrokerSettings>>().ToString());
