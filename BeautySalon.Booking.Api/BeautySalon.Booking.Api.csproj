@@ -35,9 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BeautySalon.Booking.Application\BeautySalon.Booking.Application.csproj" />
-    <ProjectReference Include="..\..\BeautySalon.Booking.Contrects\BeautySalon.Booking.Contracts.csproj" />
-    <ProjectReference Include="..\..\BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj" />
+    <ProjectReference Include="..\BeautySalon.Booking.Application\BeautySalon.Booking.Application.csproj" />
+    <ProjectReference Include="..\BeautySalon.Booking.Contracts\BeautySalon.Booking.Contracts.csproj" />
+    <ProjectReference Include="..\BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj" />
     <ProjectReference Include="..\BeautySalon.Booking.Persistence\BeautySalon.Booking.Persistence.csproj" />
   </ItemGroup>
 

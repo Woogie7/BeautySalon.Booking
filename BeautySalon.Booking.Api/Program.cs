@@ -1,14 +1,14 @@
 using AutoMapper;
-using BeautySalon.Booking.Application;
 using BeautySalon.Booking.Persistence;
-using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using MediatR;
 using BeautySalon.Booking.Api;
-using BeautySalon.Booking.Infrastructure;
-using BeautySalon.Booking.Infrastructure.Rabbitmq;
-using BeautySalon.Booking.Application.DTO;
 using MassTransit;
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Booking.Infrastructure;
 using BeautySalon.Booking.Application.Features.Bookings.CreateBooking;
+using BeautySalon.Booking.Application.DTO;
+using BeautySalon.Booking.Application;
+using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,9 +27,7 @@ builder.Services.AddMassTransit(busConfing =>
 
     busConfing.UsingRabbitMq((context, configurator) =>
     {
-        MessageBrokerSettings settings = context.GetRequiredService<MessageBrokerSettings>();
-
-        configurator.Host(new Uri("localhost"), h =>
+        configurator.Host(new Uri("amqp://beautysalon.booking.rabbitmq:5672"), h =>
         {
             h.Username("guest");
             h.Password("guest");

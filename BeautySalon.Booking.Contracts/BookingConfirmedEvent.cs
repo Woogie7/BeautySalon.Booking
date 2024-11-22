@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BeautySalon.Booking.Contracts
+{
+    public record BookingConfirmedEvent
+    {
+        public Guid Id { get; init; }
+        public string Status { get; init; }
+    }
+}

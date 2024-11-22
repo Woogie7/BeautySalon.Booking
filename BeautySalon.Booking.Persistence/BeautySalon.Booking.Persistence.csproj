@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BeautySalon.Booking.Application\BeautySalon.Booking.Application.csproj" />
+    <ProjectReference Include="..\BeautySalon.Booking.Application\BeautySalon.Booking.Application.csproj" />
     <ProjectReference Include="..\BeautySalon.Domain\BeautySalon.Booking.Domain.csproj" />
   </ItemGroup>
 

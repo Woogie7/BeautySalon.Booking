@@ -32,7 +32,7 @@ services:
     ports:
         - "6379:6379"
   
-  beautysalon.booking.RabbitMq:
+  beautysalon.booking.rabbitmq:
     image: rabbitmq:management
     container_name: beautysalon.booking.rabbitmq
     hostname: booking-mq

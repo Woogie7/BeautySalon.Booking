@@ -4,11 +4,6 @@ using BeautySalon.Booking.Persistence.Context;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BeautySalon.Booking.Persistence.Repositories
 {
@@ -71,6 +66,11 @@ namespace BeautySalon.Booking.Persistence.Repositories
         public async Task<Book> GetByIdBookAsync(Guid bookId)
         {
             return await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == BookId.Create(bookId));
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

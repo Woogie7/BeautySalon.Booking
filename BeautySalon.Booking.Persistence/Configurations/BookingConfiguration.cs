@@ -25,6 +25,12 @@ namespace BeautySalon.Booking.Persistence.Configurations
 
             builder.Ignore(b => b.DomainEvents);
 
+            builder
+                .Property<int>("_bookStatusId")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("BookStatusId")
+                .IsRequired();
+
             builder.Property(b => b.Id)
                 .ValueGeneratedNever()
                 .HasConversion(
@@ -47,6 +53,10 @@ namespace BeautySalon.Booking.Persistence.Configurations
                 .WithMany()
                 .HasForeignKey(b => b.ServiceId)
                 .IsRequired();
+
+            builder.HasOne(o => o.BookStatus)
+                .WithMany()
+                .HasForeignKey("_bookStatusId");
         }
     }
 }
