@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,11 +21,9 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
         public ClientId ClientId { get; private set; }
 
         public ServiceId ServiceId { get; private set; }
-        public BookStatus BookStatus { get; private set; }
+
         private int _bookStatusId;
-
-
-        private bool _isConfirmed;
+        public BookStatus BookStatus { get; private set; }
 
         private Book(BookId id,
             BookingTime time, 
@@ -36,8 +35,8 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             EmployeeId = employee;
             ClientId = clientId;
             ServiceId = service;
-            _bookStatusId = BookStatus.Processing.Id;
-            _isConfirmed = false;
+            BookStatus = BookStatus.Processing;
+            _bookStatusId = BookStatus.Id;
         }
 
         private Book() { }
@@ -57,14 +56,31 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
 
         public void ConfirmBooking()
         {
-            _isConfirmed = true;
-            BookStatus = BookStatus.Confirmed;
+            if (BookStatus != BookStatus.Processing)
+            {
+                throw new InvalidOperationException("Only bookings in 'Processing' status can be confirmed.");
+            }
+
+            SetStatus(BookStatus.Confirmed);
+            //AddDomainEvents(new BookingConfirmed(this));
+            //можнот добавить доменное событие потверждения бронирования
         }
 
-        public void CanceledBooking()
+        public void CancelBooking()
         {
-            _isConfirmed = false;
-            BookStatus = BookStatus.Canceled;
+            if (BookStatus == BookStatus.Canceled)
+            {
+                throw new InvalidOperationException("Booking is already canceled.");
+            }
+
+            SetStatus(BookStatus.Canceled);
+            //AddDomainEvents(new BookingCanceled(this));
+            //можнот добавить доменное событие отмены бронирования
+        }
+
+        private void SetStatus(BookStatus status)
+        {
+            BookStatus = status;
         }
 
     }

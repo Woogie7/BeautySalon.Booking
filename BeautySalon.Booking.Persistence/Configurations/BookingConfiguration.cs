@@ -1,4 +1,5 @@
-﻿using BeautySalon.Domain.AggregatesModel.BookingAggregate;
+﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
+using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,11 +26,6 @@ namespace BeautySalon.Booking.Persistence.Configurations
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder
-                .Property<int>("_bookStatusId")
-                .UsePropertyAccessMode(PropertyAccessMode.Field)
-                .HasColumnName("BookStatusId")
-                .IsRequired();
 
             builder.Property(b => b.Id)
                 .ValueGeneratedNever()
@@ -54,9 +50,14 @@ namespace BeautySalon.Booking.Persistence.Configurations
                 .HasForeignKey(b => b.ServiceId)
                 .IsRequired();
 
-            builder.HasOne(o => o.BookStatus)
-                .WithMany()
-                .HasForeignKey("_bookStatusId");
+            builder
+            .Property(b => b.BookStatus)
+            .HasConversion(
+                v => v.Name, // Преобразование из BookingStatus в строку
+                v => BookStatus.FromDisplayName<BookStatus>(v) // Преобразование из строки в BookingStatus
+            )
+            .IsRequired();
+
         }
     }
 }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BeautySalon.Booking.Persistence.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20241122185342_addBookStatus")]
-    partial class addBookStatus
+    [Migration("20241130133910_asd")]
+    partial class asd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,10 @@ namespace BeautySalon.Booking.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("BookStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uuid");
 
@@ -56,10 +60,6 @@ namespace BeautySalon.Booking.Persistence.Migrations
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("_bookStatusId")
-                        .HasColumnType("integer")
-                        .HasColumnName("BookStatusId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
@@ -67,8 +67,6 @@ namespace BeautySalon.Booking.Persistence.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("ServiceId");
-
-                    b.HasIndex("_bookStatusId");
 
                     b.ToTable("Booking", (string)null);
                 });
@@ -177,12 +175,6 @@ namespace BeautySalon.Booking.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.BookStatus", "BookStatus")
-                        .WithMany()
-                        .HasForeignKey("_bookStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("BeautySalon.Domain.AggregatesModel.BookingAggregate.BookingTime", "Time", b1 =>
                         {
                             b1.Property<Guid>("BookId")
@@ -204,8 +196,6 @@ namespace BeautySalon.Booking.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("BookId");
                         });
-
-                    b.Navigation("BookStatus");
 
                     b.Navigation("Time")
                         .IsRequired();

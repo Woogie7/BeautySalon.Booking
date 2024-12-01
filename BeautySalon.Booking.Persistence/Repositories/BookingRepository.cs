@@ -1,4 +1,5 @@
 ﻿using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Persistence.Context;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;

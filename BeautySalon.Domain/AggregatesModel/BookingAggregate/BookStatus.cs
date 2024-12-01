@@ -9,9 +9,9 @@ namespace BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate
 {
     public class BookStatus : Enumeration
     {
-        public static BookStatus Processing = new (1, nameof(Processing));
-        public static BookStatus Confirmed = new (1, nameof(Confirmed));
-        public static BookStatus Canceled = new (1, nameof(Canceled));
+        public static readonly BookStatus Processing = new (1, nameof(Processing));
+        public static readonly BookStatus Confirmed = new (2, nameof(Confirmed));
+        public static readonly BookStatus Canceled = new (3, nameof(Canceled));
 
         protected BookStatus(int id, string name) : base(id, name)
         {

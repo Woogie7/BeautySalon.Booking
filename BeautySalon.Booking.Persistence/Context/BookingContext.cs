@@ -1,4 +1,5 @@
-﻿using BeautySalon.Booking.Persistence.Configurations;
+﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
+using BeautySalon.Booking.Persistence.Configurations;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using Microsoft.EntityFrameworkCore;
 using System;

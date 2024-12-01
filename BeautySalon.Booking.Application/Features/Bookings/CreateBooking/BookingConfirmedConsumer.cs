@@ -43,7 +43,7 @@ public sealed class BookingConfirmedConsumer : IConsumer<BookingConfirmedEvent>
 
             if (status == BookStatus.Canceled)
             {
-                booking.CanceledBooking();
+                booking.CancelBooking();
                 await _bookingRepository.SaveChangesAsync();
 
                 _logger.LogInformation("Booking with ID: {Id} it was Canceled", context.Message.Id);

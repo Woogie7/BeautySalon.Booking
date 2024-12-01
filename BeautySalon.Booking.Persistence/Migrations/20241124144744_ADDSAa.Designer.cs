@@ -3,6 +3,7 @@ using System;
 using BeautySalon.Booking.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BeautySalon.Booking.Persistence.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    partial class BookingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124144744_ADDSAa")]
+    partial class ADDSAa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,18 +28,34 @@ namespace BeautySalon.Booking.Persistence.Migrations
             modelBuilder.Entity("BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.BookStatus", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("BookStatus");
+                    b.ToTable("BookStatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Processing"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Confirmed"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Canceled"
+                        });
                 });
 
             modelBuilder.Entity("BeautySalon.Domain.AggregatesModel.BookingAggregate.Book", b =>
@@ -44,9 +63,8 @@ namespace BeautySalon.Booking.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BookStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("BookStatusId")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uuid");
@@ -57,7 +75,13 @@ namespace BeautySalon.Booking.Persistence.Migrations
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("_bookStatusId")
+                        .HasColumnType("integer")
+                        .HasColumnName("BookStatusId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("BookStatusId");
 
                     b.HasIndex("ClientId");
 
@@ -65,7 +89,13 @@ namespace BeautySalon.Booking.Persistence.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Booking", (string)null);
+                    b.HasIndex("_bookStatusId");
+
+                    b.ToTable("Booking", null, t =>
+                        {
+                            t.Property("BookStatusId")
+                                .HasColumnName("BookStatusId1");
+                        });
                 });
 
             modelBuilder.Entity("BeautySalon.Domain.AggregatesModel.BookingAggregate.Client", b =>
@@ -154,6 +184,12 @@ namespace BeautySalon.Booking.Persistence.Migrations
 
             modelBuilder.Entity("BeautySalon.Domain.AggregatesModel.BookingAggregate.Book", b =>
                 {
+                    b.HasOne("BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.BookStatus", "BookStatus")
+                        .WithMany()
+                        .HasForeignKey("BookStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BeautySalon.Domain.AggregatesModel.BookingAggregate.Client", null)
                         .WithMany()
                         .HasForeignKey("ClientId")
@@ -170,6 +206,12 @@ namespace BeautySalon.Booking.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.BookStatus", null)
+                        .WithMany()
+                        .HasForeignKey("_bookStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("BeautySalon.Domain.AggregatesModel.BookingAggregate.BookingTime", "Time", b1 =>
@@ -193,6 +235,8 @@ namespace BeautySalon.Booking.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("BookId");
                         });
+
+                    b.Navigation("BookStatus");
 
                     b.Navigation("Time")
                         .IsRequired();

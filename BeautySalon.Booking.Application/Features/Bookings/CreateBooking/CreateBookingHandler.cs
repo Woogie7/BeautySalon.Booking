@@ -60,7 +60,7 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Не удалось создать бронирование. Попробуйте еще раз.");
+                throw new ApplicationException($"Не удалось создать бронирование.'{ex.Message}' Попробуйте еще раз.");
             }
 
         }
