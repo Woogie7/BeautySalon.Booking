@@ -1,4 +1,5 @@
-﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
+﻿using BeautySalon.Booking.Application.DTO.Booking;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,10 @@ namespace BeautySalon.Booking.Application.Interface
         Task CreateAsync(Book booking);
         Task<Book> GetByIdBookAsync(Guid bookId);
 
+        Task<IEnumerable<Book>> GetBookingsAsync(BookingFilter bookingFilter);
+
         Task SaveChangesAsync();
+
+        
     }
 }

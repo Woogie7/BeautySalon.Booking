@@ -1,4 +1,5 @@
-﻿using BeautySalon.Booking.Application.Interface;
+﻿using BeautySalon.Booking.Application.DTO.Booking;
+using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Persistence.Context;
@@ -72,6 +73,13 @@ namespace BeautySalon.Booking.Persistence.Repositories
         public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Book>> GetBookingsAsync(BookingFilter bookingFilter)
+        {
+            return await _dbContext.Books
+                .Filter(bookingFilter)
+                .ToListAsync();
         }
     }
 }

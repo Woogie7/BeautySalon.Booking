@@ -3,6 +3,7 @@ using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace BeautySalon.Booking.Persistence.Configurations
 
         private void ConfigureBookingTable(EntityTypeBuilder<Book> builder)
         {
+            
             builder.ToTable("Booking");
 
             builder.HasKey(b => b.Id);
@@ -60,4 +62,5 @@ namespace BeautySalon.Booking.Persistence.Configurations
 
         }
     }
+
 }

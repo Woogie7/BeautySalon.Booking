@@ -9,7 +9,7 @@ namespace BeautySalon.Domain.SeedWork
 {
     public abstract class Entity<TId> where TId : notnull
     {
-
+        
         private readonly List<IDomainEvent> _domainEvents = new();
         
         public TId Id { get; protected set; }

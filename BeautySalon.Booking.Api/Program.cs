@@ -5,15 +5,18 @@ using BeautySalon.Booking.Api;
 using MassTransit;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Booking.Infrastructure;
-using BeautySalon.Booking.Application.Features.Bookings.CreateBooking;
-using BeautySalon.Booking.Application.DTO;
 using BeautySalon.Booking.Application;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
+using BeautySalon.Booking.Application.DTO.Booking;
+using Microsoft.AspNetCore.Builder;
+using BeautySalon.Booking.Application.Features.Bookings.Confirmed;
+using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
+using BeautySalon.Booking.Application.Features.Bookings.CancelBooking;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
@@ -46,24 +49,47 @@ builder.Services.AddStackExchangeRedisCache(o => o.Configuration = (builder.Conf
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
     app.MigrateDbAsync();
 }
 
 app.UseHttpsRedirection();
 
-app.MapPost("/booking", async (CreateBookingRequest reqest, ISender _sender, IMapper _mapper) =>
+app.MapPost("/bookings", async ([FromBody]CreateBookingRequest reqest, ISender _sender, IMapper _mapper) =>
 {
     var command = _mapper.Map<CreateBookingCommand>(reqest);
-    
+
     var createBookingResult = await _sender.Send(command);
 
     return Results.Ok(createBookingResult);
 });
+
+app.MapGet("/bookings", async ([AsParameters]BookingFilter bookingFilter, ISender _sender) =>
+{
+    var result = await _sender.Send(new GetBookingQuery(bookingFilter));
+
+    if (result != null && result.Any())
+        return Results.Ok(result);
+
+    return Results.NotFound();
+});
+
+app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
+{
+    await _sender.Send(reqest);
+
+    return Results.Ok();
+});
+
+
+app.MapDelete("/bookings", async ([FromBody] CancelBookingCommand reqest, ISender _sender) =>
+{
+    await _sender.Send(reqest);
+
+    return Results.NoContent();
+});
+
 
 app.Run();
 

@@ -1,4 +1,4 @@
-﻿namespace BeautySalon.Booking.Application.DTO
+﻿namespace BeautySalon.Booking.Application.DTO.Booking
 {
     public record CreateBookingRequest
     (

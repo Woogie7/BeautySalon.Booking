@@ -1,4 +1,5 @@
-﻿using BeautySalon.Domain.AggregatesModel.BookingAggregate;
+﻿using BeautySalon.Booking.Application.Service.Cache;
+using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,19 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
         TimeSpan Duration,
         Guid ServiceId,
         decimal Discount
-    ) : IRequest<Book>
+    ) : IRequest<Book>, ICacheInvalidatingCommand<Book>
     {
        
         public CreateBookingCommand() : this(Guid.Empty, Guid.Empty, DateTime.MinValue, TimeSpan.Zero, Guid.Empty, 0m)
         {
+        }
+
+        public IEnumerable<string> GetCacheKeysToInvalidate()
+        {
+            yield return $"bookings:{ClientId}:::";
+            yield return $"bookings::{EmployeeId}::";
+            yield return $"bookings:::{StartTime}:";
+            yield return $"bookings::::{StartTime-Duration}";
         }
     }
 }
