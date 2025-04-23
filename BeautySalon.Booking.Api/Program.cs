@@ -8,7 +8,6 @@ using BeautySalon.Booking.Infrastructure;
 using BeautySalon.Booking.Application;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.DTO.Booking;
-using Microsoft.AspNetCore.Builder;
 using BeautySalon.Booking.Application.Features.Bookings.Confirmed;
 using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
 using BeautySalon.Booking.Application.Features.Bookings.CancelBooking;
@@ -81,15 +80,6 @@ app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
 
     return Results.Ok();
 });
-
-
-app.MapDelete("/bookings", async ([FromBody] CancelBookingCommand reqest, ISender _sender) =>
-{
-    await _sender.Send(reqest);
-
-    return Results.NoContent();
-});
-
 
 app.Run();
 

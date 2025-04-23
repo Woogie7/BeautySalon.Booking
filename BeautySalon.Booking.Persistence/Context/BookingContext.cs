@@ -1,12 +1,5 @@
-﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
-using BeautySalon.Booking.Persistence.Configurations;
-using BeautySalon.Domain.AggregatesModel.BookingAggregate;
+﻿using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BeautySalon.Booking.Persistence.Context
 {
