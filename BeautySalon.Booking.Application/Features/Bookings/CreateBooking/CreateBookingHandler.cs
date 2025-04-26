@@ -5,6 +5,8 @@ using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using MediatR;
+using FluentResults;
+using static MassTransit.ValidationResultExtensions;
 
 namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
 {
@@ -25,7 +27,17 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
         {
             try
             {
-                await ValidateClientAndEmployeeAsync(request.ClientId, request.EmployeeId);
+                var results = await Task.WhenAll(
+                     _bookingRepository.IsExistClientAsync(request.ClientId),
+                     _employeeService.IsEmployeeExistsAsync(request.EmployeeId)
+);
+
+                var clientExists = results[0];
+                var employeeExists = results[1];
+
+                if (!employeeExists || !clientExists)
+                    throw new ArgumentException(!employeeExists ? "Мастер не найден." : "Клиент не найден.");
+
 
                 var booking = Book.Create(
                     new BookingTime(request.StartTime, request.Duration),
