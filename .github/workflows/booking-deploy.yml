@@ -1,0 +1,43 @@
+name: deployment Booking Service
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+
+      - name: Checkout Deployment Repo (BeautySalon.Deployments)
+        uses: actions/checkout@v4
+        with:
+          repository: Woogie7/BeautySalon.Deployments
+          token: ${{ secrets.DEPLOY_REPO_PAT }}  
+          path: deployments  
+
+      - name: Login to DockerHub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/beautysalon.booking.api:${{ github.sha }} .
+
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/beautysalon.booking.api:${{ github.sha }}
+
+      - name: Update image tag in values.yaml
+        run: |
+          yq eval -i '.image.tag = "${{ github.sha }}"' deployments/k8s/bookingHelm/values.yaml  
+
+      - name: Commit and Push Changes to Deployment Repo
+        run: |
+          cd deployments  
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add k8s/booking/values.yaml
+          git commit -m "Update image tag to ${{ github.sha }}"
+          git push

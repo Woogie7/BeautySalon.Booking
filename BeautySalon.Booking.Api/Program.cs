@@ -81,5 +81,10 @@ app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
     return Results.Ok();
 });
 
+app.MapGet("/hello", () => 
+{
+    return Results.Ok("asdas");
+});
+
 app.Run();
 
