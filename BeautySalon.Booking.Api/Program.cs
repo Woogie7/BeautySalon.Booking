@@ -12,6 +12,7 @@ using BeautySalon.Booking.Application.Features.Bookings.Confirmed;
 using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
 using BeautySalon.Booking.Application.Features.Bookings.CancelBooking;
 using Microsoft.AspNetCore.Mvc;
+using BeautySalon.Booking.Application.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,9 +82,12 @@ app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
     return Results.Ok();
 });
 
-app.MapGet("/hello", () => 
+app.MapGet("/hello", async (ICacheService _cacheService) => 
 {
-    return Results.Ok("asdas");
+    await _cacheService.SetAsync("123", "Привет мир", TimeSpan.FromSeconds(30));
+    var sadfa = await _cacheService.GetAsync<string>("123");
+
+    return Results.Ok(sadfa);
 });
 
 app.Run();
