@@ -82,7 +82,7 @@ app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
 
 app.MapGet("/hello", async (ICacheService _cacheService) => 
 {
-    await _cacheService.SetAsync("123", "Привет мир", TimeSpan.FromSeconds(30));
+    await _cacheService.SetAsync("123", "Привет льж", TimeSpan.FromSeconds(30));
     var sadfa = await _cacheService.GetAsync<string>("123");
 
     return Results.Ok(sadfa);
