@@ -42,8 +42,11 @@ builder.Services.AddPersistance(builder.Configuration);
 
 //builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSection("MessageBroker"));
 
-builder.Services.AddStackExchangeRedisCache(o => o.Configuration = (builder.Configuration.GetConnectionString("BookingChache")));
-
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("BookingChache");
+    options.InstanceName = "Booking_";
+});
 
 var app = builder.Build();
 
