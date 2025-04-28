@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Persist
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Api", "BeautySalon.Booking.Api\BeautySalon.Booking.Api.csproj", "{8AA4D829-7EDD-4731-B475-7526D0375F1B}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{23980DC2-5559-4849-AD8E-9E0CE7F34001}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Application", "BeautySalon.Booking.Application\BeautySalon.Booking.Application.csproj", "{2AF0C62A-94D9-436F-AD97-765486AFA2DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Booking.Infrastructure", "BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj", "{40D87118-A171-4333-9F35-74E94A247084}"
@@ -35,10 +33,6 @@ Global
 		{8AA4D829-7EDD-4731-B475-7526D0375F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AA4D829-7EDD-4731-B475-7526D0375F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AA4D829-7EDD-4731-B475-7526D0375F1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23980DC2-5559-4849-AD8E-9E0CE7F34001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23980DC2-5559-4849-AD8E-9E0CE7F34001}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23980DC2-5559-4849-AD8E-9E0CE7F34001}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23980DC2-5559-4849-AD8E-9E0CE7F34001}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2AF0C62A-94D9-436F-AD97-765486AFA2DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AF0C62A-94D9-436F-AD97-765486AFA2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AF0C62A-94D9-436F-AD97-765486AFA2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU

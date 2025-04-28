@@ -10,7 +10,6 @@ using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.DTO.Booking;
 using BeautySalon.Booking.Application.Features.Bookings.Confirmed;
 using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
-using BeautySalon.Booking.Application.Features.Bookings.CancelBooking;
 using Microsoft.AspNetCore.Mvc;
 using BeautySalon.Booking.Application.Interface;
 
@@ -42,7 +41,6 @@ builder.Services.AddMassTransit(busConfing =>
 });
 
 builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSection("MessageBroker"));
-//builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<MessageBrokerSettings>>().ToString());
 
 builder.Services.AddStackExchangeRedisCache(o => o.Configuration = (builder.Configuration.GetConnectionString("BookingChache")));
 
