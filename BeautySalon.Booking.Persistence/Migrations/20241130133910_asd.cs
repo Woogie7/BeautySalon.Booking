@@ -13,7 +13,7 @@ namespace BeautySalon.Booking.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            /*migrationBuilder.DropForeignKey(
                 name: "FK_Booking_BookStatus_BookStatusId",
                 table: "Booking");
 
@@ -76,7 +76,7 @@ namespace BeautySalon.Booking.Persistence.Migrations
                 table: "Booking",
                 type: "text",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: "");*/
         }
 
         /// <inheritdoc />
