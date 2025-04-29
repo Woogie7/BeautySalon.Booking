@@ -50,9 +50,11 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
+await  app.MigrateDbAsync();
+
 if (app.Environment.IsDevelopment())
 {
-    app.MigrateDbAsync();
+   
 }
 
 app.UseHttpsRedirection();
