@@ -18,10 +18,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddApplication();
-//builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure();
 builder.Services.AddPersistance(builder.Configuration);
 
-/*builder.Services.AddMassTransit(busConfing =>
+builder.Services.AddMassTransit(busConfing =>
 {
     busConfing.SetKebabCaseEndpointNameFormatter();
 
@@ -37,10 +37,9 @@ builder.Services.AddPersistance(builder.Configuration);
 
         configurator.ConfigureEndpoints(context);
     });
+});
 
-});*/
-
-//builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSection("MessageBroker"));
+builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSection("MessageBroker"));
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
@@ -51,11 +50,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
 var app = builder.Build();
 
 await  app.MigrateDbAsync();
-
-if (app.Environment.IsDevelopment())
-{
-   
-}
 
 app.UseHttpsRedirection();
 
