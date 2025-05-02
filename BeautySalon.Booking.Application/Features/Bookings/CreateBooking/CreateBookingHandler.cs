@@ -27,6 +27,7 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
         {
             try
             {
+                Console.WriteLine("Проверка существования клиента и сотрудника...");
                 var results = await Task.WhenAll(
                      _bookingRepository.IsExistClientAsync(request.ClientId),
                      _employeeService.IsEmployeeExistsAsync(request.EmployeeId)
@@ -37,8 +38,9 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
 
                 if (!employeeExists || !clientExists)
                     throw new ArgumentException(!employeeExists ? "Мастер не найден." : "Клиент не найден.");
+                Console.WriteLine("Нашли");
 
-
+                Console.WriteLine("создали бронь");
                 var booking = Book.Create(
                     new BookingTime(request.StartTime, request.Duration),
                     EmployeeId.Create(request.EmployeeId),
@@ -55,9 +57,11 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
                 {
                     throw new ArgumentException($"Клиент {request.ClientId} уже имеет бронирование в выбранное время.");
                 }
-
+                Console.WriteLine("в бд за броню");
                 await _bookingRepository.CreateAsync(booking);
-
+                Console.WriteLine("успех");
+                
+                Console.WriteLine("отправка rabbitmq");
                 await _eventBus.SendMessageAsync(
                     new BookingCreatedEvent
                     {
@@ -72,7 +76,8 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"Не удалось создать бронирование.'{ex.Message}' Попробуйте еще раз.");
+                Console.WriteLine("Ошибка: " + ex); // или _logger.LogError
+                throw new ApplicationException($"Не удалось создать бронирование. '{ex.Message}' Попробуйте еще раз.", ex);
             }
 
         }
