@@ -29,7 +29,7 @@ builder.Services.AddMassTransit(busConfing =>
 
     busConfing.UsingRabbitMq((context, configurator) =>
     {
-        configurator.Host(new Uri("amqp://beautysalon.booking.rabbitmq:5672"), h =>
+        configurator.Host(new Uri("amqp://rabbitmq:5672"), h =>
         {
             h.Username("guest");
             h.Password("guest");
