@@ -11,11 +11,7 @@ namespace BeautySalon.Booking.Persistence
     {
         public static IServiceCollection AddPersistance(this IServiceCollection service, IConfiguration confing)
         {
-            var connectionString = $"Host={Environment.GetEnvironmentVariable("POSTGRES_HOST")};" +
-                                   $"Port={Environment.GetEnvironmentVariable("POSTGRES_PORT")};" +
-                                   $"Username={Environment.GetEnvironmentVariable("POSTGRES_USER")};" +
-                                   $"Password={Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")};" +
-                                   $"Database={Environment.GetEnvironmentVariable("POSTGRES_DB")};";
+            var connectionString = confing.GetConnectionString("BookingDatabase");
             
             service.AddDbContext<BookingDbContext>(o =>
             {
