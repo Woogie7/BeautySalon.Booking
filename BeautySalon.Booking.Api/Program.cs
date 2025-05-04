@@ -44,7 +44,7 @@ builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSecti
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("BookingChache");
-    options.InstanceName = "Booking_";
+    options.InstanceName = "Booking";
 });
 
 var app = builder.Build();
