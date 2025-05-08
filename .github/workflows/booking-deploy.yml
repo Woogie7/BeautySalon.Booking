@@ -31,7 +31,7 @@ jobs:
 
       - name: Update image tag in values.yaml
         run: |
-          yq eval -i '.image.tag = "${{ github.sha }}"' k8s/bookingHelm/values.yaml  
+          yq eval -i '.image.tag = "${{ github.sha }}"' deployments/k8s/bookingHelm/values.yaml  
 
       - name: Commit and Push Changes to Deployment Repo
         run: |
