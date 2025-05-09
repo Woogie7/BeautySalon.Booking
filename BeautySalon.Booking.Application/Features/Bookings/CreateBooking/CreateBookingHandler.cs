@@ -1,4 +1,5 @@
 ﻿using BeautySalon.Booking.Application.Exceptions;
+using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Contracts;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
@@ -6,22 +7,23 @@ using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using MediatR;
-using FluentResults;
-using static MassTransit.ValidationResultExtensions;
+using Microsoft.Extensions.Logging;
 
-namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
+namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
 {
     public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Book>
     {
+        private readonly ILogger<CreateBookingHandler> _logger;
         private readonly IBookingRepository _bookingRepository;
         private readonly IEmployeeService _employeeService;
         private readonly IEventBus _eventBus;
 
-        public CreateBookingHandler(IBookingRepository bookingRepository, IEmployeeService employeeService, IEventBus messageProducer)
+        public CreateBookingHandler(IBookingRepository bookingRepository, IEmployeeService employeeService, IEventBus messageProducer, ILogger<CreateBookingHandler> logger)
         {
             _bookingRepository = bookingRepository;
             _employeeService = employeeService;
             _eventBus = messageProducer;
+            _logger = logger;
         }
 
         public async Task<Book> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
@@ -62,7 +64,8 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"Не удалось создать бронирование. '{ex.Message}' Попробуйте еще раз.", ex);
+                _logger.LogError(ex, "Ошибка при создании бронирования");
+                throw;
             }
 
         }
