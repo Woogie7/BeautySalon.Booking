@@ -62,8 +62,6 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             }
 
             SetStatus(BookStatus.Confirmed);
-            //AddDomainEvents(new BookingConfirmed(this));
-            //можнот добавить доменное событие потверждения бронирования
         }
 
         public void CancelBooking()
@@ -74,8 +72,6 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
             }
 
             SetStatus(BookStatus.Canceled);
-            //AddDomainEvents(new BookingCanceled(this));
-            //можнот добавить доменное событие отмены бронирования
         }
 
         private void SetStatus(BookStatus status)

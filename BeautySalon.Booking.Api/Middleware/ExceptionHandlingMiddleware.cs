@@ -20,6 +20,12 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
+        catch (BadRequestException ex)
+        {
+            _logger.LogError(ex, "Bad Request error occurred");
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new { Message = ex.Message });
+        }
         catch (NotFoundException ex)
         {
             context.Response.StatusCode = StatusCodes.Status404NotFound;

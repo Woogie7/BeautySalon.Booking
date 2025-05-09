@@ -3,6 +3,7 @@ using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Contracts;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
+using BeautySalon.Booking.Domain.Exceptions;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
@@ -37,7 +38,7 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                     EmployeeId.Create(request.EmployeeId),
                     ClientId.Create(request.ClientId),
                     ServiceId.Create(request.ServiceId)
-                    );
+                );
 
                 if (await _bookingRepository.IsBusyEmployeeAsync(request.EmployeeId, booking))
                 {
@@ -48,8 +49,9 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                 {
                     throw new ConflictException($"Клиент {request.ClientId} уже имеет бронирование в выбранное время.");
                 }
+
                 await _bookingRepository.CreateAsync(booking);
-                
+
                 await _eventBus.SendMessageAsync(
                     new BookingCreatedEvent
                     {
@@ -61,6 +63,10 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                     }, cancellationToken);
 
                 return booking;
+            }
+            catch (DomainException ex)
+            {
+                throw new BadRequestException(ex.Message);
             }
             catch (Exception ex)
             {
