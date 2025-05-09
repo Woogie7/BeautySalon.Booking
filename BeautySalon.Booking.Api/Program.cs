@@ -2,6 +2,7 @@ using AutoMapper;
 using BeautySalon.Booking.Persistence;
 using MediatR;
 using BeautySalon.Booking.Api;
+using BeautySalon.Booking.Api.Middleware;
 using MassTransit;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Booking.Infrastructure;
@@ -52,6 +53,7 @@ var app = builder.Build();
 await app.MigrateDbAsync();
 
 app.UseHttpsRedirection();
+app.UseExceptionHandling();
 
 app.MapPost("/bookings", async ([FromBody]CreateBookingRequest reqest, ISender _sender, IMapper _mapper) =>
 {
@@ -81,10 +83,10 @@ app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
 
 app.MapGet("/hello", async (ICacheService _cacheService) => 
 {
-    // await _cacheService.SetAsync("123", "Привет мир", TimeSpan.FromSeconds(30));
-    // var sadfa = await _cacheService.GetAsync<string>("123");
+    await _cacheService.SetAsync("123", "Привет мир", TimeSpan.FromSeconds(30));
+    var sadfa = await _cacheService.GetAsync<string>("123");
 
-    return Results.Ok("ЛЫДВАЬЫ");
+    return Results.Ok(sadfa);
 });
 
 app.Run();

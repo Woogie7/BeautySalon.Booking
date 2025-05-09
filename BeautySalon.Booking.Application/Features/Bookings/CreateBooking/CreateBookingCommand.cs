@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentResults;
 
 namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
 {
@@ -17,7 +18,7 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
         TimeSpan Duration,
         Guid ServiceId,
         decimal Discount
-    ) : IRequest<Book>, ICacheInvalidatingCommand<Book>
+    ) : IRequest<Result<Book>>, ICacheInvalidatingCommand<Book>
     {
        
         public CreateBookingCommand() : this(Guid.Empty, Guid.Empty, DateTime.MinValue, TimeSpan.Zero, Guid.Empty, 0m)
