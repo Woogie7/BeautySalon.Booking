@@ -78,7 +78,7 @@ namespace BeautySalon.Booking.Persistence.Repositories
         public async Task<IEnumerable<Book>> GetBookingsAsync(BookingFilter bookingFilter)
         {
             await _dbContext.Employees.AddAsync(Employee.Create("Игорь"));
-            await _dbContext.Clients.AddAsync(Client.Create("Мишаня", "Пипир", "adsa@mail.ru", "89048699856",new DateTime(2002, 05, 26)));
+            await _dbContext.Clients.AddAsync(Client.Create("Мишаня", "Пипир", "adsa@mail.ru", "89048699856",new DateTime(2002, 05, 26).ToUniversalTime()));
             await _dbContext.Services.AddAsync(Service.Create("Ногти"));
 
             await _dbContext.SaveChangesAsync();
