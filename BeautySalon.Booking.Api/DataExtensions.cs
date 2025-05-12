@@ -1,5 +1,4 @@
 ﻿using BeautySalon.Booking.Persistence.Context;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalon.Booking.Api

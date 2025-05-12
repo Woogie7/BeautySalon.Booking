@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Booking.Infrastructure", "BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj", "{40D87118-A171-4333-9F35-74E94A247084}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Contracts", "BeautySalon.Booking.Contracts\BeautySalon.Booking.Contracts.csproj", "{C52CE545-A75F-40D6-82E8-AD15880B1EF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Contracts", "BeautySalon.Contracts\BeautySalon.Contracts.csproj", "{C52CE545-A75F-40D6-82E8-AD15880B1EF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

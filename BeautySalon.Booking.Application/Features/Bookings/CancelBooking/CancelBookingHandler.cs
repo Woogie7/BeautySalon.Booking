@@ -1,6 +1,5 @@
-﻿using BeautySalon.Booking.Application.Features.Bookings.Confirmed;
-using BeautySalon.Booking.Application.Interface;
-using BeautySalon.Booking.Contracts;
+﻿using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Contracts;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;

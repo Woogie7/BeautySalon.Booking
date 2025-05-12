@@ -1,18 +1,18 @@
 using AutoMapper;
-using BeautySalon.Booking.Persistence;
-using MediatR;
 using BeautySalon.Booking.Api;
 using BeautySalon.Booking.Api.Middleware;
-using MassTransit;
-using BeautySalon.Booking.Infrastructure.Rabbitmq;
-using BeautySalon.Booking.Infrastructure;
 using BeautySalon.Booking.Application;
-using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.DTO.Booking;
-using BeautySalon.Booking.Application.Features.Bookings.Confirmed;
+using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
+using BeautySalon.Booking.Application.Features.Bookings.ConfirmedBooking;
 using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
-using Microsoft.AspNetCore.Mvc;
 using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Booking.Infrastructure;
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Booking.Persistence;
+using MassTransit;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +52,6 @@ var app = builder.Build();
 
 await app.MigrateDbAsync();
 
-app.UseHttpsRedirection();
 app.UseExceptionHandling();
 
 app.MapPost("/bookings", async ([FromBody]CreateBookingRequest reqest, ISender _sender, IMapper _mapper) =>
@@ -89,5 +88,6 @@ app.MapGet("/hello", async (ICacheService _cacheService) =>
     return Results.Ok(sadfa);
 });
 
+app.UseHttpsRedirection();
 app.Run();
 

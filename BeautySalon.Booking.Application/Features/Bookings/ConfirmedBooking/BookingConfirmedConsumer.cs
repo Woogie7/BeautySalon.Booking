@@ -1,12 +1,11 @@
 ﻿using BeautySalon.Booking.Application.Interface;
-using BeautySalon.Booking.Application.Service.Cache;
-using BeautySalon.Booking.Contracts;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
+using BeautySalon.Contracts;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace BeautySalon.Booking.Application.Features.Bookings.Confirmed;
+namespace BeautySalon.Booking.Application.Features.Bookings.ConfirmedBooking;
 
 public sealed class BookingConfirmedConsumer : IConsumer<BookingConfirmedEvent>
 {
