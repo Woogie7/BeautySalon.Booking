@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeautySalon.Contracts\BeautySalon.Contracts.csproj" />
+    <ProjectReference Include="..\src\BeautySalon.Contracts\BeautySalon.Contracts\BeautySalon.Contracts.csproj" />
     <ProjectReference Include="..\BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj" />
     <ProjectReference Include="..\BeautySalon.Domain\BeautySalon.Booking.Domain.csproj" />
   </ItemGroup>

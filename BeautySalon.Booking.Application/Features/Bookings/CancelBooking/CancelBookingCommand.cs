@@ -1,11 +1,11 @@
-﻿using BeautySalon.Booking.Application.Service.Cache;
-using BeautySalon.Domain.AggregatesModel.BookingAggregate;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BeautySalon.Booking.Application.Service.Cache;
+using BeautySalon.Domain.AggregatesModel.BookingAggregate;
+using MediatR;
 
 namespace BeautySalon.Booking.Application.Features.Bookings.CancelBooking
 {

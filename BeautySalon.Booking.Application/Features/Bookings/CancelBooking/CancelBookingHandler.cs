@@ -1,15 +1,10 @@
 ﻿using BeautySalon.Booking.Application.Interface;
-using BeautySalon.Contracts;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Contracts;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BeautySalon.Booking.Application.Features.Bookings.CancelBooking
 {

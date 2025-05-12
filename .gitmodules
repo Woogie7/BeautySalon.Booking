@@ -1,0 +1,3 @@
+[submodule "src/BeautySalon.Contracts"]
+	path = src/BeautySalon.Contracts
+	url = https://github.com/Woogie7/BeautySalon.Contracts.git
