@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Booking.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Booking.Infrastructure", "BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj", "{40D87118-A171-4333-9F35-74E94A247084}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1BB5D62F-3223-4E7D-92B3-670E9BDB42A0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FCE16869-8CD5-44C7-984B-EC8407DAB6F4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BeautySalon.Contracts", "BeautySalon.Contracts", "{4330B0AB-953C-48D6-9604-059347F0B60A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BeautySalon.Contracts", "BeautySalon.Contracts", "{99E8CC91-D929-47F4-B82B-D88618450FC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Contracts", "src\BeautySalon.Contracts\BeautySalon.Contracts\BeautySalon.Contracts.csproj", "{E685B8F6-C0DA-43E0-8E35-546894B3B58D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Contracts", "src\BeautySalon.Contracts\BeautySalon.Contracts\BeautySalon.Contracts.csproj", "{1DACE526-D46C-4960-B1F2-F7E8547EF185}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +45,10 @@ Global
 		{40D87118-A171-4333-9F35-74E94A247084}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40D87118-A171-4333-9F35-74E94A247084}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40D87118-A171-4333-9F35-74E94A247084}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E685B8F6-C0DA-43E0-8E35-546894B3B58D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E685B8F6-C0DA-43E0-8E35-546894B3B58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E685B8F6-C0DA-43E0-8E35-546894B3B58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E685B8F6-C0DA-43E0-8E35-546894B3B58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DACE526-D46C-4960-B1F2-F7E8547EF185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DACE526-D46C-4960-B1F2-F7E8547EF185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DACE526-D46C-4960-B1F2-F7E8547EF185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DACE526-D46C-4960-B1F2-F7E8547EF185}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,7 +57,7 @@ Global
 		SolutionGuid = {C2923996-2744-480E-9F59-6F0D7EF02680}
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4330B0AB-953C-48D6-9604-059347F0B60A} = {1BB5D62F-3223-4E7D-92B3-670E9BDB42A0}
-		{E685B8F6-C0DA-43E0-8E35-546894B3B58D} = {4330B0AB-953C-48D6-9604-059347F0B60A}
+		{99E8CC91-D929-47F4-B82B-D88618450FC2} = {FCE16869-8CD5-44C7-984B-EC8407DAB6F4}
+		{1DACE526-D46C-4960-B1F2-F7E8547EF185} = {99E8CC91-D929-47F4-B82B-D88618450FC2}
 	EndGlobalSection
 EndGlobal
