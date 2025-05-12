@@ -73,12 +73,12 @@ app.MapGet("/bookings", async ([AsParameters]BookingFilter bookingFilter, ISende
     return Results.NotFound();
 });
 
-app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
-{
-    await _sender.Send(reqest);
-
-    return Results.Ok();
-});
+// app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
+// {
+//     await _sender.Send(reqest);
+//
+//     return Results.Ok();
+// });
 
 app.MapGet("/hello", async (ICacheService _cacheService) => 
 {
