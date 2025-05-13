@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="BeautySalon.Contracts" Version="1.0.0" />
     <PackageReference Include="FluentResults" Version="3.16.0" />
     <PackageReference Include="MassTransit" Version="8.4.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
@@ -18,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj" />
     <ProjectReference Include="..\BeautySalon.Domain\BeautySalon.Booking.Domain.csproj" />
-    <ProjectReference Include="..\src\BeautySalon.Contracts\BeautySalon.Contracts\BeautySalon.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
