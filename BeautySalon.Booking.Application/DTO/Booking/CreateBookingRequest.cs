@@ -6,7 +6,6 @@
         TimeSpan Duration,
         Guid ServiceId,
         Guid ClientId,
-        Guid EmployeeId,
-        decimal Discount
+        Guid EmployeeId
     );
 }
