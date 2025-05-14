@@ -18,7 +18,6 @@ namespace BeautySalon.Booking.Application.AutoMapper
             CreateMap<CreateBookingCommand, CreateBookingRequest>()
                 .ForMember(b => b.StartTime, i => i.MapFrom(b => b.StartTime))
                 .ForMember(b => b.Duration, i => i.MapFrom(b => b.Duration))
-                .ForMember(b => b.Discount, i => i.MapFrom(b => b.Discount))
                 .ForMember(b => b.ServiceId, i => i.MapFrom(b => b.ServiceId))
                 .ForMember(b => b.EmployeeId, i => i.MapFrom(b => b.EmployeeId));
 
