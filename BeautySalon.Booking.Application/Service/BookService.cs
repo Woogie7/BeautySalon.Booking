@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
 using BeautySalon.Booking.Application.DTO.Booking;
 using BeautySalon.Booking.Application.Interface;
-using BeautySalon.Domain.AggregatesModel.BookingAggregate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BeautySalon.Booking.Application.Service
 {

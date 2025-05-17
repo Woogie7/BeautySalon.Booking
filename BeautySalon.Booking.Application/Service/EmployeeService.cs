@@ -30,13 +30,13 @@ namespace BeautySalon.Booking.Application.Service
                 if (cacheEmployee != null)
                     return true;
 
-                var databaseEmployee = await _bookRepository.GetByIdEmployeeAsync(employeeId);
-                if (databaseEmployee != null)
-                {
-                    var employeeDto = _mapper.Map<EmployeeDTO>(databaseEmployee);
-                    await _cacheService.SetAsync($"employee{employeeId}", employeeDto, TimeSpan.FromMinutes(5));
-                    return true;
-                }
+                // var databaseEmployee = await _bookRepository.GetByIdEmployeeAsync(employeeId);
+                // if (databaseEmployee != null)
+                // {
+                //     var employeeDto = _mapper.Map<EmployeeDTO>(databaseEmployee);
+                //     await _cacheService.SetAsync($"employee{employeeId}", employeeDto, TimeSpan.FromMinutes(5));
+                //     return true;
+                // }
 
                 // Запрос в RabbitMq
 

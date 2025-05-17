@@ -2,8 +2,10 @@
 using BeautySalon.Booking.Application.DTO;
 using BeautySalon.Booking.Application.DTO.Booking;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
+using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
+using BeautySalon.Booking.Domain.SeedWork;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 
@@ -21,8 +23,8 @@ namespace BeautySalon.Booking.Application.AutoMapper
                 .ForMember(b => b.ServiceId, i => i.MapFrom(b => b.ServiceId))
                 .ForMember(b => b.EmployeeId, i => i.MapFrom(b => b.EmployeeId));
 
-            CreateMap<Employee, EmployeeDTO>()
-                .ForMember(e => e.Id, i => i.MapFrom(e => e.Id.Value))
+            CreateMap<EmployeeReadModel, EmployeeDTO>()
+                .ForMember(e => e.Id, i => i.MapFrom(e => e.Id))
                 .ForMember(e => e.Name, i => i.MapFrom(e => e.Name));
 
             CreateMap<Book, BookDto>()
@@ -38,7 +40,7 @@ namespace BeautySalon.Booking.Application.AutoMapper
                 .ForMember(b => b.ClientId, opt => opt.MapFrom(dto => ClientId.Create(Guid.Parse(dto.ClientName)))) 
                 .ForMember(b => b.EmployeeId, opt => opt.MapFrom(dto => EmployeeId.Create(Guid.Parse(dto.EmployeeName))))
                 .ForMember(b => b.Time, opt => opt.MapFrom(dto => new BookingTime(dto.StartTime, dto.EndTime - dto.StartTime)))
-                .ForMember(b => b.BookStatus, opt => opt.MapFrom(dto => BookStatus.FromDisplayName<BookStatus>(dto.Status)));
+                .ForMember(b => b.BookStatus, opt => opt.MapFrom(dto => Enumeration.FromDisplayName<BookStatus>(dto.Status)));
         }
     }
 }

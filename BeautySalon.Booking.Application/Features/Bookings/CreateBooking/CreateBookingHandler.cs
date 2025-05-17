@@ -3,7 +3,6 @@ using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Domain.Exceptions;
-using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;

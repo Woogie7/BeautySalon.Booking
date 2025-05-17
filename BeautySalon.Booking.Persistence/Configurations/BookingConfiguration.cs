@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Domain.SeedWork;
 
 namespace BeautySalon.Booking.Persistence.Configurations
@@ -38,19 +39,22 @@ namespace BeautySalon.Booking.Persistence.Configurations
 
             builder.OwnsOne(b => b.Time);
 
-            builder.HasOne<Client>()
-                .WithMany()
-                .HasForeignKey(b => b.ClientId)
+            builder.Property(b => b.ClientId)
+                .HasConversion(
+                    id => id.Value,
+                    value => ClientId.Create(value))
                 .IsRequired();
 
-            builder.HasOne<Employee>()
-                .WithMany()
-                .HasForeignKey(b => b.EmployeeId)
+            builder.Property(b => b.EmployeeId)
+                .HasConversion(
+                    id => id.Value,
+                    value => EmployeeId.Create(value))
                 .IsRequired();
 
-            builder.HasOne<Service>()
-                .WithMany()
-                .HasForeignKey(b => b.ServiceId)
+            builder.Property(b => b.ServiceId)
+                .HasConversion(
+                    id => id.Value,
+                    value => ServiceId.Create(value))
                 .IsRequired();
 
             builder

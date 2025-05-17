@@ -19,6 +19,8 @@
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.1-dev-00953" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.31" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
     
@@ -28,7 +30,6 @@
     <ProjectReference Include="..\BeautySalon.Booking.Application\BeautySalon.Booking.Application.csproj" />
     <ProjectReference Include="..\BeautySalon.Contracts\BeautySalon.Contracts.csproj" />
     <ProjectReference Include="..\BeautySalon.Booking.Infrastructure\BeautySalon.Booking.Infrastructure.csproj" />
-    <ProjectReference Include="..\BeautySalon.Booking.Persistence\BeautySalon.Booking.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 ﻿using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
-using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MassTransit;

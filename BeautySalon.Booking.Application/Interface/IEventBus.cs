@@ -1,5 +1,5 @@
 ﻿
-namespace BeautySalon.Booking.Infrastructure.Rabbitmq
+namespace BeautySalon.Booking.Application.Interface
 {
     public interface IEventBus
     {

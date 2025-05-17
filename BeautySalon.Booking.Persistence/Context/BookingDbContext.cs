@@ -1,4 +1,6 @@
-﻿using BeautySalon.Domain.AggregatesModel.BookingAggregate;
+﻿using BeautySalon.Booking.Application.Models;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
+using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalon.Booking.Persistence.Context
@@ -7,8 +9,8 @@ namespace BeautySalon.Booking.Persistence.Context
     {
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<Client> Clients { get; set; } = null!;
-        public DbSet<Service> Services { get; set; } = null!;
-        public DbSet<Employee> Employees { get; set; } = null!;
+        public DbSet<ServiceReadModel> Services { get; set; } = null!;
+        public DbSet<EmployeeReadModel> Employees { get; set; } = null!;
 
         public BookingDbContext(DbContextOptions<BookingDbContext> options) : base(options) { }
 

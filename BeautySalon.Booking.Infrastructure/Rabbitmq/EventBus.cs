@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using BeautySalon.Booking.Application.Interface;
+using MassTransit;
 
 namespace BeautySalon.Booking.Infrastructure.Rabbitmq
 {

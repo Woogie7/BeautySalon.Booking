@@ -9,10 +9,12 @@ using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Infrastructure;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Booking.Infrastructure.Rabbitmq.Consumers;
 using BeautySalon.Booking.Persistence;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +24,21 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddPersistance(builder.Configuration);
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Information()  
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
 builder.Services.AddMassTransit(busConfing =>
 {
     busConfing.SetKebabCaseEndpointNameFormatter();
 
     busConfing.AddConsumer<BookingConfirmedConsumer>();
+    busConfing.AddConsumer<EmployeeEventsConsumer>();
+    busConfing.AddConsumer<ServiceEventsConsumer>();
 
     busConfing.UsingRabbitMq((context, configurator) =>
     {
