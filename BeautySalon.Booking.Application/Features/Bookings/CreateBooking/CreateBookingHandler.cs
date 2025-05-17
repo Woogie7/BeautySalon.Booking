@@ -15,10 +15,10 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
     {
         private readonly ILogger<CreateBookingHandler> _logger;
         private readonly IBookingRepository _bookingRepository;
-        private readonly IEmployeeService _employeeService;
+        private readonly IEmployeeReedService _employeeService;
         private readonly IEventBus _eventBus;
 
-        public CreateBookingHandler(IBookingRepository bookingRepository, IEmployeeService employeeService, IEventBus messageProducer, ILogger<CreateBookingHandler> logger)
+        public CreateBookingHandler(IBookingRepository bookingRepository, IEmployeeReedService employeeService, IEventBus messageProducer, ILogger<CreateBookingHandler> logger)
         {
             _bookingRepository = bookingRepository;
             _employeeService = employeeService;
@@ -30,7 +30,7 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
         {
             try
             {
-                await ValidateClientAndEmployeeAsync(request.ClientId, request.EmployeeId);
+                await ValidateClientAndEmployeeAsync(request.ClientId, request.EmployeeId, request.ServiceId);
 
                 var booking = Book.Create(
                     new BookingTime(request.StartTime, request.Duration),
@@ -65,13 +65,17 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
 
         }
 
-        private async Task ValidateClientAndEmployeeAsync(Guid clientId, Guid employeeId)
+        private async Task ValidateClientAndEmployeeAsync(Guid clientId, Guid employeeId, Guid serviceId)
         {
-            if (!await _employeeService.IsEmployeeExistsAsync(employeeId))
+            if (!await _employeeService.IsEmployeeExistsAsync(employeeId));
                 throw new NotFoundException($"Сотрудник не найден: {employeeId}");
 
-            if (!await _bookingRepository.IsExistClientAsync(clientId))
-                throw new NotFoundException($"Клиент не найден: {clientId}");
+            // var clientExists = await _clientReadService.IsClientExistAsync(clientId);
+            // if (!clientExists)
+            //     throw new NotFoundException($"Клиент не найден: {clientId}");
+
+           // if (!employee.Skills.Any(s => s.ServiceId == serviceId))
+               // throw new BadRequestException($"Сотрудник не оказывает услугу {serviceId}");
         }
     }
 }

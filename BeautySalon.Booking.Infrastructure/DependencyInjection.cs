@@ -1,4 +1,5 @@
 ﻿using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Booking.Application.Service;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,7 @@ namespace BeautySalon.Booking.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection service)
         {
             service.AddTransient<IEventBus, EventBus>();
+            service.AddTransient<IEmployeeReedService, EmployeeReedService>();
             return service;
         }
     }

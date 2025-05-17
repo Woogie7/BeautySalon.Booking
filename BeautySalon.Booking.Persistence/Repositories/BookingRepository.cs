@@ -41,15 +41,6 @@ namespace BeautySalon.Booking.Persistence.Repositories
                 .AnyAsync();
         }
 
-        // public async Task<Employee?> GetByIdEmployeeAsync(Guid employeeId)
-        // {
-        //
-        //     var employee = await _dbContext.Employees
-        //         .AsNoTracking()
-        //         .FirstOrDefaultAsync(e => e.Id == EmployeeId.Create(employeeId));
-        //     return employee;
-        // }
-
         public async Task<Client?> GetByIdClientAsync(Guid clientId)
         {
             var client = await _dbContext.Clients

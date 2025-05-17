@@ -15,7 +15,6 @@ namespace BeautySalon.Booking.Application
             service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
             service.AddTransient<ICacheService, CacheService>();
-            service.AddTransient<IEmployeeService, EmployeeService>();
             service.AddTransient<IBookService, BookService>();
 
             service.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheInvalidationPipelineBehavior<,>));
