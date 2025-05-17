@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BeautySalon.Booking.Domain.SeedWork;
 
 namespace BeautySalon.Booking.Persistence.Configurations
 {
@@ -55,8 +56,8 @@ namespace BeautySalon.Booking.Persistence.Configurations
             builder
             .Property(b => b.BookStatus)
             .HasConversion(
-                v => v.Name, // Преобразование из BookingStatus в строку
-                v => BookStatus.FromDisplayName<BookStatus>(v) // Преобразование из строки в BookingStatus
+                v => v.Name,
+                v => Enumeration.FromDisplayName<BookStatus>(v)
             )
             .IsRequired();
 
