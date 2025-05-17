@@ -81,7 +81,7 @@ public sealed class BookingConfirmedConsumer : IConsumer<BookingStatusChangedEve
                 await _cacheService.RemoveAsync(cacheKey);
             }
 
-            _logger.LogInformation("Cache invalidated for Booking ID: {Id}", context.Message.IdBooking);
+            _logger.LogInformation("Cache invalidasted for Booking ID: {Id}", context.Message.IdBooking);
 
         }
         catch (Exception ex)
