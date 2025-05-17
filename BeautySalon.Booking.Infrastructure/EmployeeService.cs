@@ -42,6 +42,7 @@ namespace BeautySalon.Booking.Application.Service
             {
                 var dto = _mapper.Map<EmployeeDTO>(employee);
                 await _cacheService.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(5));
+                _logger.LogInformation("ПИСЬКА");
                 return true;
             }
             
