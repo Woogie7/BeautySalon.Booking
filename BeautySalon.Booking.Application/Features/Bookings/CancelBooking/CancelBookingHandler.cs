@@ -59,10 +59,12 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CancelBooking
                 _logger.LogInformation("Cache invalidated for Booking ID: {Id}", request.Id);
 
                 await _eventBus.SendMessageAsync(
-                    new BookingCanceledEvent
+                    new BookingCancelledEvent
                     {
-                        Id = booking.Id.Value,
-                        Reason = request.Reason
+                        BookingId = booking.Id.Value,
+                        EmployeeId = booking.EmployeeId.Value,
+                        Duration = booking.Time.Duration,
+                        StartTime = booking.Time.StartTime
                     });
 
                 return booking;

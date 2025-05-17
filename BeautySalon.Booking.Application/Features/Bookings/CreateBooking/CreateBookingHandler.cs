@@ -52,16 +52,6 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
 
                 await _bookingRepository.CreateAsync(booking);
 
-                await _eventBus.SendMessageAsync(
-                    new BookingCreatedEvent
-                    {
-                        Id = booking.Id.Value,
-                        ClientId = booking.ClientId.Value,
-                        EmployeeId = booking.EmployeeId.Value,
-                        ServiceId = booking.ServiceId.Value,
-                        Status = booking.BookStatus.ToString()
-                    }, cancellationToken);
-
                 return booking;
             }
             catch (DomainException ex)
