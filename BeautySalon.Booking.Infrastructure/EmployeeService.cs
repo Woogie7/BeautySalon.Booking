@@ -27,26 +27,39 @@ namespace BeautySalon.Booking.Application.Service
         public async Task<bool> IsEmployeeExistsAsync(Guid employeeId)
         {
             var cacheKey = $"employee{employeeId}";
+            _logger.LogInformation($"Проверка сотрудника {employeeId} | Ключ кэша: {cacheKey}");
 
+            // 1. Проверка кэша
             var cached = await _cacheService.GetAsync<EmployeeDTO>(cacheKey);
             if (cached != null)
+            {
+                _logger.LogInformation($"Сотрудник {employeeId} найден в кэше");
                 return true;
+            }
 
+            // 2. Проверка в БД
+            _logger.LogInformation($"Сотрудник {employeeId} не найден в кэше, проверяем БД...");
+    
             var employee = await _context.Employees
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == employeeId);
-            
-            _logger.LogInformation(employee.Name);
 
             if (employee != null)
             {
+                _logger.LogInformation($"Сотрудник {employeeId} найден в БД: {employee.Name}");
+        
                 var dto = _mapper.Map<EmployeeDTO>(employee);
                 await _cacheService.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(5));
-                _logger.LogInformation("ПИСЬКА");
+                _logger.LogInformation($"Данные сотрудника {employeeId} сохранены в кэш");
+        
                 return true;
             }
-            
+    
+            // 3. Сотрудник не найден
+            _logger.LogWarning($"Сотрудник {employeeId} не найден ни в кэше, ни в БД");
             await _cacheService.SetAsync(cacheKey + ":notfound", "1", TimeSpan.FromMinutes(1));
+            _logger.LogInformation($"Флаг 'не найдено' для {employeeId} сохранен в кэш");
+    
             return false;
         }
     }
