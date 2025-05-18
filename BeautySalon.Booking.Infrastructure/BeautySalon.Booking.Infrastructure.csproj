@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BeautySalon.Contracts" Version="1.0.4" />
+    <PackageReference Include="BeautySalon.Contracts" Version="1.0.6" />
     <PackageReference Include="MassTransit" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.4" />
   </ItemGroup>

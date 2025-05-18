@@ -9,5 +9,6 @@
         
         public List<Guid> ServiceIds { get; set; } = new();
         public ICollection<ScheduleReadModel> Schedules { get; set; }
+        public ICollection<EmployeeAvailability> Availabilities { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace BeautySalon.Booking.Persistence.Context
         public DbSet<ServiceReadModel> Services { get; set; } = null!;
         public DbSet<EmployeeReadModel> Employees { get; set; } = null!;
         public DbSet<ScheduleReadModel> Schedules { get; set; } = null!;
+        public DbSet<EmployeeAvailability> Availabilities { get; set; } = null!;
 
         public BookingDbContext(DbContextOptions<BookingDbContext> options) : base(options) { }
 

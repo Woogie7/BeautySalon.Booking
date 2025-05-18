@@ -25,8 +25,7 @@ public class EmployeeEventsConsumer :
         var message = context.Message;
 
         _logger.LogInformation("Получено событие создания сотрудника: {Id}", message.Id);
-
-        // Проверка на существование
+        
         if (await _context.Employees.FindAsync(message.Id) != null)
         {
             _logger.LogWarning("Сотрудник с Id {Id} уже существует", message.Id);

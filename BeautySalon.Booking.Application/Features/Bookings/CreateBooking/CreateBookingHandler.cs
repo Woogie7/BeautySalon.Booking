@@ -42,10 +42,12 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                     ServiceId.Create(request.ServiceId)
                 );
 
-                if (!await _employeeService.IsEmployeeAvailableAsync(request.EmployeeId, request.StartTime, request.Duration))
+                if (!await _employeeService.IsEmployeeAvailableAsync(
+                        request.EmployeeId, request.StartTime, request.Duration))
                 {
                     throw new BadRequestException("Сотрудник недоступен в выбранное время");
                 }
+
 
                 if (await _bookingRepository.IsBusyClientAsync(request.ClientId, booking))
                 {
@@ -53,6 +55,15 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                 }
 
                 await _bookingRepository.CreateAsync(booking);
+
+                await _eventBus.SendMessageAsync(new BookingSlotReservedEvent
+                {
+                    EmployeeId = booking.EmployeeId.Value,
+                    BookingId = booking.Id.Value,
+                    StartTime = booking.Time.StartTime,
+                    Duration = booking.Time.Duration
+                }, cancellationToken);
+
 
                 return booking;
             }

@@ -58,7 +58,7 @@ namespace BeautySalon.Booking.Infrastructure
 
             if (!schedule.Any())
                 return false;
-            
+
             var timeOfDayStart = requestedStart.TimeOfDay;
             var timeOfDayEnd = requestedEnd.TimeOfDay;
 
@@ -69,19 +69,37 @@ namespace BeautySalon.Booking.Infrastructure
 
             if (!fitsSchedule)
                 return false;
-            
+
+            // Проверка перекрывающихся бронирований
             var overlappingBooking = await _context.Books
                 .AnyAsync(b =>
-                    b.EmployeeId ==  EmployeeId.Create(employeeId) &&
-                    ((requestedStart >= b.Time.StartTime && requestedStart < b.Time.EndTime) ||
-                     (requestedEnd > b.Time.StartTime && requestedEnd <= b.Time.EndTime) ||
-                     (requestedStart <= b.Time.StartTime && requestedEnd >= b.Time.EndTime))
+                    b.EmployeeId == EmployeeId.Create(employeeId) &&
+                    (
+                        (requestedStart >= b.Time.StartTime && requestedStart < b.Time.EndTime) ||
+                        (requestedEnd > b.Time.StartTime && requestedEnd <= b.Time.EndTime) ||
+                        (requestedStart <= b.Time.StartTime && requestedEnd >= b.Time.EndTime)
+                    )
                 );
 
-            return !overlappingBooking;
+            if (overlappingBooking)
+                return false;
+
+            // Проверка занятости (Availability)
+            var overlappingAvailability = await _context.Availabilities
+                .AnyAsync(a =>
+                    a.EmployeeId == employeeId &&
+                    (
+                        (requestedStart >= a.StartTime && requestedStart < a.EndTime) ||
+                        (requestedEnd > a.StartTime && requestedEnd <= a.EndTime) ||
+                        (requestedStart <= a.StartTime && requestedEnd >= a.EndTime)
+                    )
+                );
+
+            if (overlappingAvailability)
+                return false;
+
+            return true;
         }
-
-
 
     }
 }
