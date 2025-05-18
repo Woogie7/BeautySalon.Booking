@@ -38,7 +38,8 @@ public class EmployeeEventsConsumer :
             Id = message.Id,
             Name = message.Name,
             Email = message.Email,
-            Phone = message.Phone
+            Phone = message.Phone,
+            ServiceIds = message.ServiceIds
         };
 
         var schedules = message.Schedule.Select(s => new ScheduleReadModel
