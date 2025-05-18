@@ -59,6 +59,7 @@ namespace BeautySalon.Booking.Infrastructure
 
             if (!schedule.Any())
             {
+                _logger.LogWarning("Сотрудник {EmployeeId} не имеет расписания на {DayOfWeek}", employeeId, dayOfWeek);
                 throw new BadRequestException("Сотрудник не работает в указанный день недели.");
             }
 
@@ -66,15 +67,15 @@ namespace BeautySalon.Booking.Infrastructure
             var timeOfDayEnd = requestedEnd.TimeOfDay;
 
             var fitsSchedule = schedule.Any(s =>
-                s.StartTime <= timeOfDayStart &&
-                s.EndTime >= timeOfDayEnd
+                s.StartTime <= timeOfDayStart && s.EndTime >= timeOfDayEnd
             );
 
             if (!fitsSchedule)
             {
+                _logger.LogWarning("Время {Start} - {End} выходит за рамки рабочего дня", timeOfDayStart, timeOfDayEnd);
                 throw new BadRequestException("Запрашиваемое время находится вне рабочих часов сотрудника.");
             }
-            
+
             var overlappingBooking = await _context.Books
                 .AnyAsync(b =>
                     b.EmployeeId == EmployeeId.Create(employeeId) &&
@@ -85,11 +86,6 @@ namespace BeautySalon.Booking.Infrastructure
                     )
                 );
 
-            if (overlappingBooking)
-            {
-                throw new BadRequestException("Выбранное время уже занято.");
-            }
-            
             var overlappingAvailability = await _context.Availabilities
                 .AnyAsync(a =>
                     a.EmployeeId == employeeId &&
@@ -100,8 +96,9 @@ namespace BeautySalon.Booking.Infrastructure
                     )
                 );
 
-            if (overlappingBooking)
+            if (overlappingBooking || overlappingAvailability)
             {
+                _logger.LogWarning("Время {Start} - {End} уже занято", requestedStart, requestedEnd);
                 throw new BadRequestException("Выбранное время уже занято.");
             }
 
