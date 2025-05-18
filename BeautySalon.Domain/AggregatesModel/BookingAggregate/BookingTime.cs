@@ -45,9 +45,6 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
         {
             var startTimeOnly = TimeOnly.FromDateTime(startTime);
             var endTimeOnly = TimeOnly.FromDateTime(startTime.Add(duration));
-
-            if (startTimeOnly < SalonOpenTime || endTimeOnly > SalonCloseTime)
-                throw new DomainException($"Салон работает с {SalonOpenTime} до {SalonCloseTime}.");
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
