@@ -54,6 +54,7 @@ public class ScheduleEmployeeEventsConsumer :
         };
 
         employee.Schedules.Add(schedule);
+        await _context.Schedules.AddAsync(schedule);
         await _context.SaveChangesAsync();
 
         _logger.LogInformation("Schedule {ScheduleId} added for Employee {EmployeeId}.", message.ScheduleId, message.EmployeeId);
