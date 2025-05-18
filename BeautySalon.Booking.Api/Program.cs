@@ -39,6 +39,7 @@ builder.Services.AddMassTransit(busConfing =>
     busConfing.AddConsumer<BookingConfirmedConsumer>();
     busConfing.AddConsumer<EmployeeEventsConsumer>();
     busConfing.AddConsumer<ServiceEventsConsumer>();
+    busConfing.AddConsumer<ScheduleEmployeeEventsConsumer>();
     busConfing.AddConsumer<AvailabilityCreatedConsumer>();
 
     busConfing.UsingRabbitMq((context, configurator) =>
