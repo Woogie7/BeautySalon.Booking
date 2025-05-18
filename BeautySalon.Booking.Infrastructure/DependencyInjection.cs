@@ -1,4 +1,5 @@
 ﻿using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Booking.Application.Interface.DB;
 using BeautySalon.Booking.Application.Service;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using Microsoft.Extensions.DependencyInjection;

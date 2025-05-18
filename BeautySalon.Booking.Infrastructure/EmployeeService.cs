@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using BeautySalon.Booking.Application.DTO;
 using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Booking.Application.Interface.DB;
 using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace BeautySalon.Booking.Application.Service
+namespace BeautySalon.Booking.Infrastructure
 {
     public class EmployeeReedService : IEmployeeReedService
     {
@@ -24,43 +24,64 @@ namespace BeautySalon.Booking.Application.Service
             _logger = logger;
         }
 
-        public async Task<bool> IsEmployeeExistsAsync(Guid employeeId)
+        public async Task<EmployeeReadModel?> GetEmployeeByIdAsync(Guid employeeId)
         {
             var cacheKey = $"employee{employeeId}";
-            _logger.LogInformation($"Проверка сотрудника {employeeId} | Ключ кэша: {cacheKey}");
-
-            // 1. Проверка кэша
-            var cached = await _cacheService.GetAsync<EmployeeDTO>(cacheKey);
+            var cached = await _cacheService.GetAsync<EmployeeReadModel>(cacheKey);
             if (cached != null)
             {
-                _logger.LogInformation($"Сотрудник {employeeId} найден в кэше");
-                return true;
+                return cached;
             }
 
-            // 2. Проверка в БД
-            _logger.LogInformation($"Сотрудник {employeeId} не найден в кэше, проверяем БД...");
-    
             var employee = await _context.Employees
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == employeeId);
 
             if (employee != null)
             {
-                _logger.LogInformation($"Сотрудник {employeeId} найден в БД: {employee.Name}");
-        
-                var dto = _mapper.Map<EmployeeDTO>(employee);
-                await _cacheService.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(5));
-                _logger.LogInformation($"Данные сотрудника {employeeId} сохранены в кэш");
-        
-                return true;
+                await _cacheService.SetAsync(cacheKey, employee, TimeSpan.FromMinutes(5));
+                return employee;
             }
-    
-            // 3. Сотрудник не найден
-            _logger.LogWarning($"Сотрудник {employeeId} не найден ни в кэше, ни в БД");
+
             await _cacheService.SetAsync(cacheKey + ":notfound", "1", TimeSpan.FromMinutes(1));
-            _logger.LogInformation($"Флаг 'не найдено' для {employeeId} сохранен в кэш");
-    
-            return false;
+            return null;
         }
+        
+        public async Task<bool> IsEmployeeAvailableAsync(Guid employeeId, DateTime requestedStart, TimeSpan duration)
+        {
+            var requestedEnd = requestedStart.Add(duration);
+            var dayOfWeek = requestedStart.DayOfWeek;
+
+            var schedule = await _context.Schedules
+                .Where(s => s.EmployeeId == employeeId && s.DayOfWeek == dayOfWeek)
+                .ToListAsync();
+
+            if (!schedule.Any())
+                return false;
+            
+            var timeOfDayStart = requestedStart.TimeOfDay;
+            var timeOfDayEnd = requestedEnd.TimeOfDay;
+
+            var fitsSchedule = schedule.Any(s =>
+                s.StartTime <= timeOfDayStart &&
+                s.EndTime >= timeOfDayEnd
+            );
+
+            if (!fitsSchedule)
+                return false;
+            
+            var overlappingBooking = await _context.Books
+                .AnyAsync(b =>
+                    b.EmployeeId ==  EmployeeId.Create(employeeId) &&
+                    ((requestedStart >= b.Time.StartTime && requestedStart < b.Time.EndTime) ||
+                     (requestedEnd > b.Time.StartTime && requestedEnd <= b.Time.EndTime) ||
+                     (requestedStart <= b.Time.StartTime && requestedEnd >= b.Time.EndTime))
+                );
+
+            return !overlappingBooking;
+        }
+
+
+
     }
 }

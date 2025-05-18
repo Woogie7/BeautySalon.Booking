@@ -2,6 +2,7 @@ using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Persistence.Context;
 using BeautySalon.Contracts.Service;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BeautySalon.Booking.Infrastructure.Rabbitmq.Consumers;
@@ -77,12 +78,23 @@ public class ServiceEventsConsumer :
         if (service == null)
         {
             _logger.LogWarning("Service with Id {ServiceId} not found. Skipping deletion.", message.Id);
-            return;
+        }
+        else
+        {
+            _context.Services.Remove(service);
         }
 
-        _context.Services.Remove(service);
+        var affectedEmployees = await _context.Employees
+            .Where(e => e.ServiceIds.Contains(message.Id))
+            .ToListAsync();
+
+        foreach (var employee in affectedEmployees)
+        {
+            employee.ServiceIds.Remove(message.Id);
+        }
+
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Service with Id {ServiceId} deleted successfully.", message.Id);
+        _logger.LogInformation("Service with Id {ServiceId} deleted and unlinked from employees.", message.Id);
     }
 }

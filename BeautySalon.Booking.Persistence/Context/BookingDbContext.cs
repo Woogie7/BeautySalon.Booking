@@ -8,9 +8,10 @@ namespace BeautySalon.Booking.Persistence.Context
     public class BookingDbContext : DbContext
     {
         public DbSet<Book> Books { get; set; } = null!;
-        public DbSet<Client> Clients { get; set; } = null!;
+        public DbSet<ClientReadModel> Clients { get; set; } = null!;
         public DbSet<ServiceReadModel> Services { get; set; } = null!;
         public DbSet<EmployeeReadModel> Employees { get; set; } = null!;
+        public DbSet<ScheduleReadModel> Schedules { get; set; } = null!;
 
         public BookingDbContext(DbContextOptions<BookingDbContext> options) : base(options) { }
 

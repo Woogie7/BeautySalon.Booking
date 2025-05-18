@@ -1,6 +1,6 @@
 namespace BeautySalon.Booking.Application.Interface;
 
-public class IClientReedService
+public interface IClientReadService
 {
-    
+    Task<bool> IsClientExistsAsync(Guid clientId);
 }

@@ -1,6 +1,7 @@
 ﻿using BeautySalon.Booking.Application.Exceptions;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Booking.Application.Interface.DB;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Domain.Exceptions;
 using BeautySalon.Contracts;
@@ -16,14 +17,16 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
         private readonly ILogger<CreateBookingHandler> _logger;
         private readonly IBookingRepository _bookingRepository;
         private readonly IEmployeeReedService _employeeService;
+        private readonly IClientReadService _clientService;
         private readonly IEventBus _eventBus;
 
-        public CreateBookingHandler(IBookingRepository bookingRepository, IEmployeeReedService employeeService, IEventBus messageProducer, ILogger<CreateBookingHandler> logger)
+        public CreateBookingHandler(IBookingRepository bookingRepository, IEmployeeReedService employeeService, IEventBus messageProducer, ILogger<CreateBookingHandler> logger, IClientReadService clientService)
         {
             _bookingRepository = bookingRepository;
             _employeeService = employeeService;
             _eventBus = messageProducer;
             _logger = logger;
+            _clientService = clientService;
         }
 
         public async Task<Book> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
@@ -39,9 +42,9 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                     ServiceId.Create(request.ServiceId)
                 );
 
-                if (await _bookingRepository.IsBusyEmployeeAsync(request.EmployeeId, booking))
+                if (!await _employeeService.IsEmployeeAvailableAsync(request.EmployeeId, request.StartTime, request.Duration))
                 {
-                    throw new ConflictException($"Сотрудник {request.EmployeeId} уже занят в выбранное время.");
+                    throw new BadRequestException("Сотрудник недоступен в выбранное время");
                 }
 
                 if (await _bookingRepository.IsBusyClientAsync(request.ClientId, booking))
@@ -67,15 +70,17 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
 
         private async Task ValidateClientAndEmployeeAsync(Guid clientId, Guid employeeId, Guid serviceId)
         {
-            if (!await _employeeService.IsEmployeeExistsAsync(employeeId));
+            var employee = await _employeeService.GetEmployeeByIdAsync(employeeId);
+            if (employee == null)
                 throw new NotFoundException($"Сотрудник не найден: {employeeId}");
 
-            // var clientExists = await _clientReadService.IsClientExistAsync(clientId);
-            // if (!clientExists)
-            //     throw new NotFoundException($"Клиент не найден: {clientId}");
+            if (!employee.ServiceIds.Contains(serviceId))
+                throw new BadRequestException($"Сотрудник не оказывает услугу {serviceId}");
 
-           // if (!employee.Skills.Any(s => s.ServiceId == serviceId))
-               // throw new BadRequestException($"Сотрудник не оказывает услугу {serviceId}");
+            var clientExists = await _clientService.IsClientExistsAsync(clientId);
+            if (!clientExists)
+                throw new NotFoundException($"Клиент не найден: {clientId}");
         }
+
     }
 }

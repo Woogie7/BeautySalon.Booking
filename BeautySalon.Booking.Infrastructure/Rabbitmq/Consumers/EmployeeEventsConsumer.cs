@@ -23,11 +23,13 @@ public class EmployeeEventsConsumer :
     public async Task Consume(ConsumeContext<EmployeeCreatedEvent> context)
     {
         var message = context.Message;
-        _logger.LogInformation("Received EmployeeCreatedEvent for EmployeeId: {EmployeeId}", message.Id);
 
+        _logger.LogInformation("Получено событие создания сотрудника: {Id}", message.Id);
+
+        // Проверка на существование
         if (await _context.Employees.FindAsync(message.Id) != null)
         {
-            _logger.LogWarning("Employee with Id {EmployeeId} already exists. Skipping creation.", message.Id);
+            _logger.LogWarning("Сотрудник с Id {Id} уже существует", message.Id);
             return;
         }
 
@@ -39,10 +41,20 @@ public class EmployeeEventsConsumer :
             Phone = message.Phone
         };
 
+        var schedules = message.Schedule.Select(s => new ScheduleReadModel
+        {
+            EmployeeId = message.Id,
+            DayOfWeek = s.DayOfWeek,
+            StartTime = s.StartTime,
+            EndTime = s.EndTime
+        }).ToList();
+
         _context.Employees.Add(employee);
+        _context.Schedules.AddRange(schedules);
+
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Employee with Id {EmployeeId} created successfully.", message.Id);
+        _logger.LogInformation("Сотрудник {Id} и его расписание успешно сохранены", message.Id);
     }
 
     public async Task Consume(ConsumeContext<EmployeeUpdatedEvent> context)
@@ -60,6 +72,15 @@ public class EmployeeEventsConsumer :
         employee.Name = message.Name;
         employee.Email = message.Email;
         employee.Phone = message.Phone;
+        
+        var newServiceIds = message.ServiceIds?.Distinct().ToList() ?? new List<Guid>();
+
+        employee.ServiceIds = employee.ServiceIds
+            .Where(id => newServiceIds.Contains(id))
+            .ToList();
+        
+        var toAdd = newServiceIds.Except(employee.ServiceIds).ToList();
+        employee.ServiceIds.AddRange(toAdd);
 
         await _context.SaveChangesAsync();
 
