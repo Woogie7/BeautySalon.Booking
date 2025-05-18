@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BeautySalon.Booking.Application.Exceptions;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Application.Interface.DB;
 using BeautySalon.Booking.Application.Models;
@@ -57,7 +58,9 @@ namespace BeautySalon.Booking.Infrastructure
                 .ToListAsync();
 
             if (!schedule.Any())
-                return false;
+            {
+                throw new BadRequestException("Сотрудник не работает в указанный день недели.");
+            }
 
             var timeOfDayStart = requestedStart.TimeOfDay;
             var timeOfDayEnd = requestedEnd.TimeOfDay;
@@ -68,7 +71,9 @@ namespace BeautySalon.Booking.Infrastructure
             );
 
             if (!fitsSchedule)
-                return false;
+            {
+                throw new BadRequestException("Запрашиваемое время находится вне рабочих часов сотрудника.");
+            }
             
             var overlappingBooking = await _context.Books
                 .AnyAsync(b =>
@@ -81,7 +86,9 @@ namespace BeautySalon.Booking.Infrastructure
                 );
 
             if (overlappingBooking)
-                return false;
+            {
+                throw new BadRequestException("Выбранное время уже занято.");
+            }
             
             var overlappingAvailability = await _context.Availabilities
                 .AnyAsync(a =>
@@ -93,8 +100,10 @@ namespace BeautySalon.Booking.Infrastructure
                     )
                 );
 
-            if (overlappingAvailability)
-                return false;
+            if (overlappingBooking)
+            {
+                throw new BadRequestException("Выбранное время уже занято.");
+            }
 
             return true;
         }
