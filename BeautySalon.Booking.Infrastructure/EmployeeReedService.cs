@@ -69,8 +69,7 @@ namespace BeautySalon.Booking.Infrastructure
 
             if (!fitsSchedule)
                 return false;
-
-            // Проверка перекрывающихся бронирований
+            
             var overlappingBooking = await _context.Books
                 .AnyAsync(b =>
                     b.EmployeeId == EmployeeId.Create(employeeId) &&
@@ -83,8 +82,7 @@ namespace BeautySalon.Booking.Infrastructure
 
             if (overlappingBooking)
                 return false;
-
-            // Проверка занятости (Availability)
+            
             var overlappingAvailability = await _context.Availabilities
                 .AnyAsync(a =>
                     a.EmployeeId == employeeId &&
@@ -100,6 +98,5 @@ namespace BeautySalon.Booking.Infrastructure
 
             return true;
         }
-
     }
 }
