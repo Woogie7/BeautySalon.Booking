@@ -12,6 +12,7 @@ namespace BeautySalon.Booking.Infrastructure
         {
             service.AddTransient<IEventBus, EventBus>();
             service.AddTransient<IEmployeeReedService, EmployeeReedService>();
+            service.AddTransient<IClientReadService, ClientReadService>();
             return service;
         }
     }
