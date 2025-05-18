@@ -1,6 +1,7 @@
 using AutoMapper;
 using BeautySalon.Booking.Application.DTO;
 using BeautySalon.Booking.Application.Interface;
+using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,21 +26,19 @@ public class ClientReadService : IClientReadService
     public async Task<bool> IsClientExistsAsync(Guid clientId)
     {
         var cacheKey = $"client{clientId}";
-        var cached = await _cacheService.GetAsync<ClientDTO>(cacheKey);
+        var cached = await _cacheService.GetAsync<ClientReadModel>(cacheKey);
         if (cached != null)
         {
             return true;
         }
     
-        var employee = await _context.Clients
+        var client = await _context.Clients
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.Id == clientId);
 
-        if (employee != null)
+        if (client != null)
         {
-            var dto = _mapper.Map<EmployeeDTO>(employee);
-            await _cacheService.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(5));
-        
+            await _cacheService.SetAsync(cacheKey, client, TimeSpan.FromMinutes(5));
             return true;
         }
             
