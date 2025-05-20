@@ -4,6 +4,7 @@ using BeautySalon.Booking.Api.Middleware;
 using BeautySalon.Booking.Application;
 using BeautySalon.Booking.Application.DTO.Booking;
 using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
+using BeautySalon.Booking.Application.Features.Bookings.CancelBooking;
 using BeautySalon.Booking.Application.Features.Bookings.ConfirmedBooking;
 using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
 using BeautySalon.Booking.Application.Interface;
@@ -87,12 +88,11 @@ app.MapGet("/bookings", async ([AsParameters]BookingFilter bookingFilter, ISende
     return Results.NotFound();
 });
 
-app.MapGet("/hello", async (ICacheService _cacheService) => 
+app.MapDelete("/bookings", async (CancelBookingCommand command, ISender _sender) =>
 {
-    await _cacheService.SetAsync("123", "Привет мир", TimeSpan.FromSeconds(30));
-    var sadfa = await _cacheService.GetAsync<string>("123");
 
-    return Results.Ok(sadfa);
+    await _sender.Send(command);
+    return Results.NoContent();
 });
 
 app.UseHttpsRedirection();
