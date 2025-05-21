@@ -1,5 +1,4 @@
 ﻿using BeautySalon.Booking.Application.Exceptions;
-using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Application.Interface.DB;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;

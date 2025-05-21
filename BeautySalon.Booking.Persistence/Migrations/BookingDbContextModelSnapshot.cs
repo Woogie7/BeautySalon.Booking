@@ -75,7 +75,7 @@ namespace BeautySalon.Booking.Persistence.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Availabilities");
+                    b.ToTable("Availabilities", (string)null);
                 });
 
             modelBuilder.Entity("BeautySalon.Booking.Application.Models.EmployeeReadModel", b =>
@@ -132,7 +132,7 @@ namespace BeautySalon.Booking.Persistence.Migrations
 
                     b.HasIndex("EmployeeReadModelId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("BeautySalon.Booking.Application.Models.ServiceReadModel", b =>
@@ -220,7 +220,7 @@ namespace BeautySalon.Booking.Persistence.Migrations
 
                             b1.HasKey("BookId");
 
-                            b1.ToTable("Booking");
+                            b1.ToTable("Booking", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("BookId");

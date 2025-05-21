@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BeautySalon.Booking.Application.DTO;
 using BeautySalon.Booking.Application.DTO.Booking;
-using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
+using BeautySalon.Booking.Application.Features.Bookings.CreateBooking;
 using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;

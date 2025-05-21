@@ -1,20 +1,24 @@
+using System.Text;
 using AutoMapper;
 using BeautySalon.Booking.Api;
 using BeautySalon.Booking.Api.Middleware;
 using BeautySalon.Booking.Application;
 using BeautySalon.Booking.Application.DTO.Booking;
-using BeautySalon.Booking.Application.Features.Booking.CreateBooking;
 using BeautySalon.Booking.Application.Features.Bookings.CancelBooking;
 using BeautySalon.Booking.Application.Features.Bookings.ConfirmedBooking;
+using BeautySalon.Booking.Application.Features.Bookings.CreateBooking;
 using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Infrastructure;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Booking.Infrastructure.Rabbitmq.Consumers;
 using BeautySalon.Booking.Persistence;
+using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using MassTransit;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +36,41 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
+
+var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()!;
+
+Log.Logger.Information("JwtOptions in Employees Service: SecretKey = {SecretKey}, Issuer = {Issuer}, Audience = {Audience}",
+    jwtOptions.SecretKey, jwtOptions.Issuer, jwtOptions.Audience);
+
+var key = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+        
+    options.AddPolicy("EmployeeOnly", policy =>
+        policy.RequireRole("Employee"));
+        
+    options.AddPolicy("ClientOnly", policy =>
+        policy.RequireRole("Client"));
+});
 
 builder.Services.AddMassTransit(busConfing =>
 {
@@ -69,14 +108,27 @@ await app.MigrateDbAsync();
 
 app.UseExceptionHandling();
 
-app.MapPost("/bookings", async ([FromBody]CreateBookingRequest reqest, ISender _sender, IMapper _mapper) =>
+app.MapPost("/bookings", async (HttpContext context, [FromBody] CreateBookingRequest request, ISender _sender, IMapper _mapper) =>
 {
-    var command = _mapper.Map<CreateBookingCommand>(reqest);
+    var userId = context.User.FindFirst("sub")?.Value;
+
+    if (string.IsNullOrWhiteSpace(userId))
+        return Results.Unauthorized();
+    
+    var clientId = Guid.Parse(userId);
+
+    
+    var command = new CreateBookingCommand(
+        request.EmployeeId,
+        clientId,
+        request.StartTime,
+        request.Duration,
+        request.ServiceId
+    );
 
     var createBookingResult = await _sender.Send(command);
-
     return Results.Ok(createBookingResult);
-});
+}).RequireAuthorization("ClientOnly");
 
 app.MapGet("/bookings", async ([AsParameters]BookingFilter bookingFilter, ISender _sender) =>
 {
@@ -86,15 +138,34 @@ app.MapGet("/bookings", async ([AsParameters]BookingFilter bookingFilter, ISende
         return Results.Ok(result);
 
     return Results.NotFound();
-});
+}).RequireAuthorization();
 
-app.MapDelete("/bookings", async (CancelBookingCommand command, ISender _sender) =>
+app.MapDelete("/bookings", async (
+    HttpContext context,
+    Guid idBook,
+    ISender _sender) =>
 {
+    var userId = context.User.FindFirst("sub")?.Value;
+
+    if (string.IsNullOrWhiteSpace(userId))
+        return Results.Unauthorized();
+
+    var clientId = Guid.Parse(userId);
+
+    var command = new CancelBookingCommand(idBook, clientId);
 
     await _sender.Send(command);
     return Results.NoContent();
-});
+}).RequireAuthorization("ClientOnly");
 
 app.UseHttpsRedirection();
 app.Run();
+
+public class JwtOptions
+{
+    public string SecretKey { get; set; } = string.Empty;
+    public string Issuer { get; set; } = string.Empty;
+    public string Audience { get; set; } = string.Empty;
+    public int ExpiryMinutes { get; set; }
+}
 

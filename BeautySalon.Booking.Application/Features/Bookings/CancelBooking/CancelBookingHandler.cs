@@ -26,7 +26,7 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CancelBooking
         public async Task<Book> Handle(CancelBookingCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Canceling book with ID: {Id}", request.Id);
-
+            
             var booking = await _bookingRepository.GetByIdBookAsync(request.Id);
             if (booking == null)
             {
@@ -46,6 +46,8 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CancelBooking
             }
             else
             {
+                
+                
                 booking.CancelBooking();
                 _logger.LogWarning("Book status changes to cancel for {Id}", request.Id);
                 await _bookingRepository.SaveChangesAsync();

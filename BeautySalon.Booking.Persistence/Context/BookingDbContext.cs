@@ -1,5 +1,6 @@
 ﻿using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
+using BeautySalon.Booking.Domain.SeedWork;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,14 @@ namespace BeautySalon.Booking.Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BookingDbContext).Assembly);
+            SeedData(modelBuilder);
+        }
+        
+        private void SeedData(ModelBuilder modelBuilder)
+        {
+            var bookStatus = Enumeration.GetAll<BookStatus>();
+
+            modelBuilder.Entity<BookStatus>().HasData(bookStatus);
         }
     }
 }

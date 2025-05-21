@@ -1,13 +1,8 @@
 ﻿using BeautySalon.Booking.Application.Service.Cache;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
+namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
 {
     public record CreateBookingCommand
     (
@@ -15,12 +10,11 @@ namespace BeautySalon.Booking.Application.Features.Booking.CreateBooking
         Guid ClientId,
         DateTime StartTime,
         TimeSpan Duration,
-        Guid ServiceId,
-        decimal Discount
+        Guid ServiceId
     ) : IRequest<Book>, ICacheInvalidatingCommand<Book>
     {
        
-        public CreateBookingCommand() : this(Guid.Empty, Guid.Empty, DateTime.MinValue, TimeSpan.Zero, Guid.Empty, 0m)
+        public CreateBookingCommand() : this(Guid.Empty, Guid.Empty, DateTime.MinValue, TimeSpan.Zero, Guid.Empty)
         {
         }
 

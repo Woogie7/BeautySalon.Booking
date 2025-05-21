@@ -9,5 +9,5 @@ using MediatR;
 
 namespace BeautySalon.Booking.Application.Features.Bookings.CancelBooking
 {
-    public record CancelBookingCommand(Guid Id): IRequest<Book>;
+    public record CancelBookingCommand(Guid Id, Guid ClientId): IRequest<Book>;
 }
