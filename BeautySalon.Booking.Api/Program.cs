@@ -104,16 +104,21 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
-
 await app.MigrateDbAsync();
 
 app.UseExceptionHandling();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapPost("/bookings", async (HttpContext context, [FromBody] CreateBookingRequest request, ISender _sender, IMapper _mapper) =>
 {
+    Log.Logger.Information("User.Identity.IsAuthenticated: {IsAuthenticated}", context.User.Identity?.IsAuthenticated);
+    foreach (var claim in context.User.Claims)
+    {
+        Log.Logger.Information("Claim: {Type} = {Value}", claim.Type, claim.Value);
+    }
+    
     var userId = context.User.FindFirst("sub")?.Value;
 
     if (string.IsNullOrWhiteSpace(userId))
