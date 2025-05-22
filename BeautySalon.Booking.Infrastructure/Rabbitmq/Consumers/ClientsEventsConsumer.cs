@@ -36,7 +36,7 @@ public class ClientEventsConsumer : IConsumer<ClientCreatedEvent>
             SurnName = message.LastName,
             Email = message.Email,
             Phone = message.Phone,
-            BerthDay = DateTime.Today
+            BerthDay = new DateTime(2005, 4, 29).ToUniversalTime()
         };
 
         _context.Clients.Add(client);
