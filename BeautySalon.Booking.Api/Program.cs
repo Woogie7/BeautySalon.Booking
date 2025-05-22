@@ -104,6 +104,10 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+
 await app.MigrateDbAsync();
 
 app.UseExceptionHandling();
