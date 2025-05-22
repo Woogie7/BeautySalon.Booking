@@ -137,7 +137,7 @@ app.MapPost("/bookings", async (HttpContext context, [FromBody] CreateBookingReq
 
     var createBookingResult = await _sender.Send(command);
     return Results.Ok(createBookingResult);
-}).RequireAuthorization("ClientOnly");
+}).RequireAuthorization("AdminOnly");
 
 app.MapGet("/bookings", async ([AsParameters]BookingFilter bookingFilter, ISender _sender) =>
 {
