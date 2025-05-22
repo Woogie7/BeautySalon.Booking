@@ -66,9 +66,8 @@ public class EmployeeEventsConsumer :
         
         var newServiceIds = message.ServiceIds?.Distinct().ToList() ?? new List<Guid>();
 
-        employee.ServiceIds = employee.ServiceIds
-            .Where(id => newServiceIds.Contains(id))
-            .ToList();
+        employee.ServiceIds.Clear();
+        employee.ServiceIds.AddRange(newServiceIds);
         
         var toAdd = newServiceIds.Except(employee.ServiceIds).ToList();
         employee.ServiceIds.AddRange(toAdd);
