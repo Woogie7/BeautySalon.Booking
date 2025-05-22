@@ -6,7 +6,6 @@ using BeautySalon.Booking.Api.Middleware;
 using BeautySalon.Booking.Application;
 using BeautySalon.Booking.Application.DTO.Booking;
 using BeautySalon.Booking.Application.Features.Bookings.CancelBooking;
-using BeautySalon.Booking.Application.Features.Bookings.ConfirmedBooking;
 using BeautySalon.Booking.Application.Features.Bookings.CreateBooking;
 using BeautySalon.Booking.Application.Features.Bookings.GetBookings;
 using BeautySalon.Booking.Application.Interface;

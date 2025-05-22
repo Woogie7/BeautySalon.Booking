@@ -1,5 +1,6 @@
 using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Persistence.Context;
+using BeautySalon.Contracts;
 using BeautySalon.Contracts.Employees;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -24,37 +25,27 @@ public class EmployeeEventsConsumer :
     {
         var message = context.Message;
 
-        _logger.LogInformation("Получено событие создания сотрудника: {Id}", message.Id);
+        _logger.LogInformation("Получено событие создания сотрудника: {Id}", message.UserId);
         
-        if (await _context.Employees.FindAsync(message.Id) != null)
+        if (await _context.Employees.FindAsync(message.UserId) != null)
         {
-            _logger.LogWarning("Сотрудник с Id {Id} уже существует", message.Id);
+            _logger.LogWarning("Сотрудник с Id {Id} уже существует", message.UserId);
             return;
         }
 
         var employee = new EmployeeReadModel
         {
-            Id = message.Id,
-            Name = message.Name,
+            Id = message.UserId,
+            Name = message.FirstName + " " + message.LastName,
             Email = message.Email,
-            Phone = message.Phone,
-            ServiceIds = message.ServiceIds
+            Phone = message.Phone
         };
-
-        var schedules = message.Schedule.Select(s => new ScheduleReadModel
-        {
-            EmployeeId = message.Id,
-            DayOfWeek = s.DayOfWeek,
-            StartTime = s.StartTime,
-            EndTime = s.EndTime
-        }).ToList();
-
+        
         _context.Employees.Add(employee);
-        _context.Schedules.AddRange(schedules);
-
+        
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Сотрудник {Id} и его расписание успешно сохранены", message.Id);
+        _logger.LogInformation("Сотрудник {Id} и его расписание успешно сохранены", message.UserId);
     }
 
     public async Task Consume(ConsumeContext<EmployeeUpdatedEvent> context)

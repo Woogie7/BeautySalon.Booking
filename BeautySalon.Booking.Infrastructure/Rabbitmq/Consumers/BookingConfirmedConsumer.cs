@@ -5,7 +5,7 @@ using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace BeautySalon.Booking.Application.Features.Bookings.ConfirmedBooking;
+namespace BeautySalon.Booking.Infrastructure.Rabbitmq.Consumers;
 
 public sealed class BookingConfirmedConsumer : IConsumer<BookingStatusChangedEvent>
 {
@@ -25,12 +25,12 @@ public sealed class BookingConfirmedConsumer : IConsumer<BookingStatusChangedEve
     {
         try
         {
-            _logger.LogInformation("Received BookingStatusChangedEvent with ID: {Id}", context.Message.IdBooking);
+            _logger.LogInformation("Received BookingStatusChangedEvent with ID: {Id}", context.Message.BookingId);
 
-            var booking = await _bookingRepository.GetByIdBookAsync(context.Message.IdBooking);
+            var booking = await _bookingRepository.GetByIdBookAsync(context.Message.BookingId);
             if (booking == null)
             {
-                _logger.LogWarning("Booking with ID: {Id} not found", context.Message.IdBooking);
+                _logger.LogWarning("Booking with ID: {Id} not found", context.Message.BookingId);
                 return;
             }
 
@@ -49,7 +49,7 @@ public sealed class BookingConfirmedConsumer : IConsumer<BookingStatusChangedEve
                     ServiceId = booking.ServiceId.Value
                 }, context.CancellationToken);
                 
-                _logger.LogInformation("Booking with ID: {Id} confirmed successfully", context.Message.IdBooking);
+                _logger.LogInformation("Booking with ID: {Id} confirmed successfully", context.Message.BookingId);
             }
             else if (status == BookStatus.Canceled)
             {
@@ -63,12 +63,12 @@ public sealed class BookingConfirmedConsumer : IConsumer<BookingStatusChangedEve
                     Duration = booking.Time.Duration
                 }, context.CancellationToken);
                 
-                _logger.LogInformation("Booking with ID: {Id} was canceled", context.Message.IdBooking);
+                _logger.LogInformation("Booking with ID: {Id} was canceled", context.Message.BookingId);
             }
             else
             {
                 _logger.LogWarning("Invalid status for Booking with ID: {Id}. Status: {Status}",
-                    context.Message.IdBooking, context.Message.Status);
+                    context.Message.BookingId, context.Message.Status);
                 return;
             }
 
@@ -80,12 +80,12 @@ public sealed class BookingConfirmedConsumer : IConsumer<BookingStatusChangedEve
                 await _cacheService.RemoveAsync(cacheKey);
             }
 
-            _logger.LogInformation("Cache invalidasted for Booking ID: {Id}", context.Message.IdBooking);
+            _logger.LogInformation("Cache invalidasted for Booking ID: {Id}", context.Message.BookingId);
 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error processing BookingConfirmedEvent with ID: {Id}", context.Message.IdBooking);
+            _logger.LogError(ex, "Error processing BookingConfirmedEvent with ID: {Id}", context.Message.BookingId);
         }
     }
 
