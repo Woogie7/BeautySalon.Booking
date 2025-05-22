@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using BeautySalon.Booking.Api;
@@ -113,13 +114,8 @@ app.UseAuthorization();
 
 app.MapPost("/bookings", async (HttpContext context, [FromBody] CreateBookingRequest request, ISender _sender, IMapper _mapper) =>
 {
-    Log.Logger.Information("User.Identity.IsAuthenticated: {IsAuthenticated}", context.User.Identity?.IsAuthenticated);
-    foreach (var claim in context.User.Claims)
-    {
-        Log.Logger.Information("Claim: {Type} = {Value}", claim.Type, claim.Value);
-    }
-    
-    var userId = context.User.FindFirst("sub")?.Value;
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
 
     if (string.IsNullOrWhiteSpace(userId))
         return Results.Unauthorized();
@@ -154,7 +150,8 @@ app.MapDelete("/bookings", async (
     Guid idBook,
     ISender _sender) =>
 {
-    var userId = context.User.FindFirst("sub")?.Value;
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
 
     if (string.IsNullOrWhiteSpace(userId))
         return Results.Unauthorized();
