@@ -32,9 +32,11 @@ public class ClientEventsConsumer : IConsumer<ClientCreatedEvent>
         var client = new ClientReadModel()
         {
             Id = message.UserId,
-            Name = message.FirstName + " " + message.LastName,
+            Name = message.FirstName,
+            SurnName = message.LastName,
             Email = message.Email,
-            Phone = message.Phone
+            Phone = message.Phone,
+            BerthDay = DateTime.Today
         };
 
         _context.Clients.Add(client);
