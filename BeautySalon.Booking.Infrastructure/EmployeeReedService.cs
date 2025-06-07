@@ -67,7 +67,7 @@ namespace BeautySalon.Booking.Infrastructure
             var timeOfDayEnd = requestedEnd.TimeOfDay;
 
             var fitsSchedule = schedule.Any(s =>
-                s.StartTime <= timeOfDayStart && s.EndTime >= timeOfDayEnd
+                s.StartTime < timeOfDayEnd && s.EndTime > timeOfDayStart
             );
 
             if (!fitsSchedule)
