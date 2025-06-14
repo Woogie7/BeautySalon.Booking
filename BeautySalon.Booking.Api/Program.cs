@@ -14,6 +14,7 @@ using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Booking.Infrastructure.Rabbitmq.Consumers;
 using BeautySalon.Booking.Persistence;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
+using FluentValidation;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -112,17 +113,26 @@ app.UseExceptionHandling();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapPost("/bookings", async (HttpContext context, [FromBody] CreateBookingRequest request, ISender _sender, IMapper _mapper) =>
+app.MapPost("/bookings", async (
+    HttpContext context,
+    [FromBody] CreateBookingRequest request,
+    ISender sender,
+    IMapper mapper,
+    IValidator<CreateBookingRequest> validator) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-
     if (string.IsNullOrWhiteSpace(userId))
         return Results.Unauthorized();
-    
+
+    var validationResult = await validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+    {
+        return Results.BadRequest(validationResult.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
+    }
+
     var clientId = Guid.Parse(userId);
 
-    
     var command = new CreateBookingCommand(
         request.EmployeeId,
         clientId,
@@ -131,9 +141,10 @@ app.MapPost("/bookings", async (HttpContext context, [FromBody] CreateBookingReq
         request.ServiceId
     );
 
-    var createBookingResult = await _sender.Send(command);
+    var createBookingResult = await sender.Send(command);
     return Results.Ok(createBookingResult);
 }).RequireAuthorization("ClientOnly");
+
 
 app.MapGet("/bookings", async ([AsParameters]BookingFilter bookingFilter, ISender _sender) =>
 {
