@@ -34,13 +34,6 @@ namespace BeautySalon.Booking.Application.AutoMapper
                .ForMember(dto => dto.StartTime, opt => opt.MapFrom(b => b.Time.StartTime))
                .ForMember(dto => dto.EndTime, opt => opt.MapFrom(b => b.Time.EndTime))
                .ForMember(dto => dto.Status, opt => opt.MapFrom(b => b.BookStatus.ToString()));
-
-
-            CreateMap<BookDto, Book>()
-                .ForMember(b => b.ClientId, opt => opt.MapFrom(dto => ClientId.Create(Guid.Parse(dto.ClientName)))) 
-                .ForMember(b => b.EmployeeId, opt => opt.MapFrom(dto => EmployeeId.Create(Guid.Parse(dto.EmployeeName))))
-                .ForMember(b => b.Time, opt => opt.MapFrom(dto => new BookingTime(dto.StartTime, dto.EndTime - dto.StartTime)))
-                .ForMember(b => b.BookStatus, opt => opt.MapFrom(dto => Enumeration.FromDisplayName<BookStatus>(dto.Status)));
         }
     }
 }
