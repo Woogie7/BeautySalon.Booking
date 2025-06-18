@@ -8,6 +8,7 @@ using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Polly;
 
 namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
 {
@@ -54,7 +55,7 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                 }
 
                 await _bookingRepository.CreateAsync(booking);
-
+                
                 await _eventBus.SendMessageAsync(new BookingSlotReservedEvent
                 {
                     EmployeeId = booking.EmployeeId.Value,
