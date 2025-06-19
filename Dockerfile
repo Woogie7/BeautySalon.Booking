@@ -6,12 +6,14 @@ EXPOSE 4681
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ARG GITHUB_TOKEN
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
 WORKDIR /src
 
 # 1. Копируем только NuGet.Config сначала
 COPY NuGet.Config .
 
-# 2. Обновляем учетные данные источника (вместо добавления нового)
+# 2. Подставляем токен (внутри Docker)
 RUN sed -i 's/%GITHUB_TOKEN%/'"$GITHUB_TOKEN"'/g' NuGet.Config
 
 # 3. Копируем остальные файлы
