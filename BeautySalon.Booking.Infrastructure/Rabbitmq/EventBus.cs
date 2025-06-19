@@ -15,14 +15,14 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
     {
         private readonly IPublishEndpoint _endpoint;
         private readonly ILogger<EventBus> _logger;
-        private readonly ResiliencePipeline _pipeline;
-        private readonly IPendingQueueRepository _pendingQueueRepository;
+        private readonly ResiliencePipeline _pipeline; 
+        //private readonly IPendingQueueRepository _pendingQueueRepository;
 
         public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger, IPendingQueueRepository pendingQueueRepository)
         {
             _endpoint = endpoint;
             _logger = logger;
-            _pendingQueueRepository = pendingQueueRepository;
+            //_pendingQueueRepository = pendingQueueRepository;
 
             _pipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
@@ -50,6 +50,7 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
 
             await _pipeline.ExecuteAsync(async _ =>
             {
+                _logger.LogInformation("Sending message to Rabbitmq");
                 await _endpoint.Publish(message);
             }, context);
         }
