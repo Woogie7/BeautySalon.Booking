@@ -18,11 +18,10 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
         private readonly ResiliencePipeline _pipeline; 
         //private readonly IPendingQueueRepository _pendingQueueRepository;
 
-        public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger, IPendingQueueRepository pendingQueueRepository)
+        public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger)
         {
             _endpoint = endpoint;
             _logger = logger;
-            //_pendingQueueRepository = pendingQueueRepository;
 
             _pipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
