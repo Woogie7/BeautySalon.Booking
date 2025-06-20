@@ -24,16 +24,21 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
             _logger = logger;
 
             _pipeline = new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions
+            .AddFallback(new FallbackStrategyOptions
             {
-                MaxRetryAttempts = 3,
-                Delay = TimeSpan.FromSeconds(2),
-                BackoffType = DelayBackoffType.Exponential,
-                OnRetry =  args =>
+                ShouldHandle = args => ValueTask.FromResult(true), 
+                FallbackAction = async args =>
                 {
                     var contextLogger = args.Context.GetLogger<EventBus>();
-                    contextLogger?.LogWarning(args.Outcome.Exception, "Retry #{0} for sending message", args.AttemptNumber);
-                    return ValueTask.CompletedTask;
+                    contextLogger?.LogError(args.Outcome.Exception, "Fallback: Failed to send message");
+
+                    var message = args.Context.Properties.Get<object>("message");
+                    if (message is not null)
+                    {
+                        await _pendingQueueRepository.SaveAsync(message); // твоя реализация
+                    }
+
+                    return default!;
                 }
             })
             .Build();
