@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BeautySalon.Booking.Application.Service.Cache;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MediatR;
 

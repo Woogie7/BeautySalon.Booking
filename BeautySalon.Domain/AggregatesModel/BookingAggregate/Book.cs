@@ -1,17 +1,10 @@
-﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
-using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.Event;
+﻿using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.Event;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
+using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Domain.SeedWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
+namespace BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate
 {
     public class Book : AggregateRoot<BookId>
     {

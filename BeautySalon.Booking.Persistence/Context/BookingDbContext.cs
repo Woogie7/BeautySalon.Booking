@@ -1,6 +1,7 @@
 ﻿using BeautySalon.Booking.Application.Models;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Booking.Domain.SeedWork;
+using BeautySalon.Booking.Persistence.Repositories;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,8 @@ namespace BeautySalon.Booking.Persistence.Context
         public DbSet<EmployeeReadModel> Employees { get; set; } = null!;
         public DbSet<ScheduleReadModel> Schedules { get; set; } = null!;
         public DbSet<EmployeeAvailability> Availabilities { get; set; } = null!;
+        
+        public DbSet<PendingQueueMessage> PendingQueueMessages { get; set; } = null!;
 
         public BookingDbContext(DbContextOptions<BookingDbContext> options) : base(options) { }
 

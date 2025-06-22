@@ -1,6 +1,7 @@
 ﻿using BeautySalon.Booking.Application.Exceptions;
 using BeautySalon.Booking.Application.Interface;
 using BeautySalon.Booking.Application.Interface.DB;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate.ValueObjects;
 using BeautySalon.Booking.Domain.Exceptions;
 using BeautySalon.Contracts;
@@ -36,7 +37,7 @@ namespace BeautySalon.Booking.Application.Features.Bookings.CreateBooking
                 await ValidateClientAndEmployeeAsync(request.ClientId, request.EmployeeId, request.ServiceId);
 
                 var booking = Book.Create(
-                    new BookingTime(request.StartTime, request.Duration),
+                    BookingTime.Create(request.StartTime, request.Duration),
                     EmployeeId.Create(request.EmployeeId),
                     ClientId.Create(request.ClientId),
                     ServiceId.Create(request.ServiceId)

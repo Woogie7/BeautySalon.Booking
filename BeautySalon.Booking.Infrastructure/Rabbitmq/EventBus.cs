@@ -15,47 +15,60 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
     {
         private readonly IPublishEndpoint _endpoint;
         private readonly ILogger<EventBus> _logger;
-        private readonly ResiliencePipeline _pipeline; 
-        //private readonly IPendingQueueRepository _pendingQueueRepository;
+        private readonly ResiliencePipeline<object> _pipeline; 
+        private readonly IPendingQueueRepository _pendingQueueRepository;
 
-        public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger)
+        public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger, IPendingQueueRepository pendingQueueRepository)
         {
             _endpoint = endpoint;
             _logger = logger;
-
-            _pipeline = new ResiliencePipelineBuilder()
-            .AddFallback(new FallbackStrategyOptions
-            {
-                ShouldHandle = args => ValueTask.FromResult(true), 
-                FallbackAction = async args =>
+            _pendingQueueRepository = pendingQueueRepository;
+            
+            _pipeline = new ResiliencePipelineBuilder<object>()
+                .AddFallback(new FallbackStrategyOptions<object>
                 {
-                    var contextLogger = args.Context.GetLogger<EventBus>();
-                    contextLogger?.LogError(args.Outcome.Exception, "Fallback: Failed to send message");
-
-                    var message = args.Context.Properties.Get<object>("message");
-                    if (message is not null)
+                    ShouldHandle = args => ValueTask.FromResult(true),
+                    FallbackAction = async args =>
                     {
-                        await _pendingQueueRepository.SaveAsync(message); // твоя реализация
-                    }
+                        var contextLogger = args.Context.GetLogger<EventBus>();
+                        contextLogger?.LogError(args.Outcome.Exception, "Fallback: Failed to send message");
 
-                    return default!;
-                }
-            })
-            .Build();
+                        if (args.Context.Properties.TryGetValue(ResilienceKeys.MessageKey, out var message))
+                        {
+                            contextLogger?.LogWarning("Fallback сработал. Сохраняем сообщение в резерв.");
+                            await _pendingQueueRepository.SaveAsync(message);
+                        }
+                        else
+                        {
+                            contextLogger?.LogWarning("Message was not found in resilience context.");
+                        }
+
+                        return Outcome.FromResult<object?>(default); 
+                    },
+                    OnFallback = args =>
+                    {
+                        if (args.Context.Properties.TryGetValue(ResilienceKeys.MessageKey, out var message))
+                        {
+                            Console.WriteLine($"[Fallback] Message: {JsonConvert.SerializeObject(message)}");
+                        }
+                        return default;
+                    }
+                })
+                .Build();
         }
 
         public async Task SendMessageAsync<T>(T message, CancellationToken cancellationToken = default)
             where T : class
         {
             var context = ResilienceContextPool.Shared.Get();
-            //context.Properties.Set("message", message);
+            context.Properties.Set(ResilienceKeys.MessageKey, message);
             context.SetLogger(_logger);
-            //context.SetPendingQueueRepository(_pendingQueueRepository);
 
             await _pipeline.ExecuteAsync(async _ =>
             {
                 _logger.LogInformation("Sending message to Rabbitmq");
                 await _endpoint.Publish(message);
+                return (object?)null;
             }, context);
         }
 
@@ -79,7 +92,9 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
             return null;
         }
     }
-
-
+    public static class ResilienceKeys
+    {
+        public static readonly ResiliencePropertyKey<object> MessageKey = new("message");
+    }
     
 }

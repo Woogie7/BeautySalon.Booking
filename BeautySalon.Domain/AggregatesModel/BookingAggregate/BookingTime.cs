@@ -18,30 +18,36 @@ namespace BeautySalon.Domain.AggregatesModel.BookingAggregate
 
         private static readonly TimeOnly SalonOpenTime = new TimeOnly(9, 0);
         private static readonly TimeOnly SalonCloseTime = new TimeOnly(21, 0);
-        public BookingTime(DateTime startTime, TimeSpan duration)
+        
+        private BookingTime() { }
+
+        public static BookingTime Create(DateTime startTime, TimeSpan duration)
         {
             ValidateDuration(duration);
             ValidateStartTime(startTime);
             ValidateSalonWorkingHours(startTime, duration);
 
-            StartTime = startTime;
-            Duration = duration;
-            EndTime = startTime.Add(duration);
+            return new BookingTime
+            {
+                StartTime = startTime,
+                Duration = duration,
+                EndTime = startTime.Add(duration)
+            };
         }
 
-        private void ValidateDuration(TimeSpan duration)
+        private static void ValidateDuration(TimeSpan duration)
         {
             if (duration <= TimeSpan.FromMinutes(30) || duration >= TimeSpan.FromHours(3))
                 throw new DomainException($"Длительность должна быть от 30 минут до 3 часов.");
         }
 
-        private void ValidateStartTime(DateTime startTime)
+        private static void ValidateStartTime(DateTime startTime)
         {
             if (startTime < DateTime.UtcNow)
                 throw new DomainException("Дата бронирования не может быть в прошлом.");
         }
 
-        private void ValidateSalonWorkingHours(DateTime startTime, TimeSpan duration)
+        private static void ValidateSalonWorkingHours(DateTime startTime, TimeSpan duration)
         {
             var startTimeOnly = TimeOnly.FromDateTime(startTime);
             var endTimeOnly = TimeOnly.FromDateTime(startTime.Add(duration));

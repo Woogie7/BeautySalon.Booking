@@ -1,4 +1,5 @@
 ﻿using BeautySalon.Booking.Application.Service.Cache;
+using BeautySalon.Booking.Domain.AggregatesModel.BookingAggregate;
 using BeautySalon.Domain.AggregatesModel.BookingAggregate;
 using MediatR;
 
