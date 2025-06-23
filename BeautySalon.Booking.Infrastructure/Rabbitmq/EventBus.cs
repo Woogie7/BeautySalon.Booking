@@ -18,7 +18,7 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
         //private readonly ResiliencePipeline<object> _pipeline; 
         //private readonly IPendingQueueRepository _pendingQueueRepository;
 
-        public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger, IPendingQueueRepository pendingQueueRepository)
+        public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger)
         {
             _endpoint = endpoint;
             _logger = logger;
