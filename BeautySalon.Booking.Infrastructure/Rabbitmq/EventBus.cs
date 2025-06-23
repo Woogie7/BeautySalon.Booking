@@ -15,14 +15,14 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
     {
         private readonly IPublishEndpoint _endpoint;
         private readonly ILogger<EventBus> _logger;
-        private readonly ResiliencePipeline<object> _pipeline; 
-        private readonly IPendingQueueRepository _pendingQueueRepository;
+        //private readonly ResiliencePipeline<object> _pipeline; 
+        //private readonly IPendingQueueRepository _pendingQueueRepository;
 
         public EventBus(IPublishEndpoint endpoint, ILogger<EventBus> logger, IPendingQueueRepository pendingQueueRepository)
         {
             _endpoint = endpoint;
             _logger = logger;
-            _pendingQueueRepository = pendingQueueRepository;
+            /*_pendingQueueRepository = pendingQueueRepository;
             
             _pipeline = new ResiliencePipelineBuilder<object>()
                 .AddFallback(new FallbackStrategyOptions<object>
@@ -54,22 +54,23 @@ namespace BeautySalon.Booking.Infrastructure.Rabbitmq
                         return default;
                     }
                 })
-                .Build();
+                .Build();*/
         }
 
         public async Task SendMessageAsync<T>(T message, CancellationToken cancellationToken = default)
             where T : class
         {
-            var context = ResilienceContextPool.Shared.Get();
-            context.Properties.Set(ResilienceKeys.MessageKey, message);
-            context.SetLogger(_logger);
+            // var context = ResilienceContextPool.Shared.Get();
+            // context.Properties.Set(ResilienceKeys.MessageKey, message);
+            // context.SetLogger(_logger);
 
-            await _pipeline.ExecuteAsync(async _ =>
-            {
-                _logger.LogInformation("Sending message to Rabbitmq");
-                await _endpoint.Publish(message);
-                return (object?)null;
-            }, context);
+            // await _pipeline.ExecuteAsync(async _ =>
+            // {
+            //     _logger.LogInformation("Sending message to Rabbitmq");
+            //     await _endpoint.Publish(message);
+            //     return (object?)null;
+            // }, context);
+            await _endpoint.Publish(message, cancellationToken);
         }
 
     }
